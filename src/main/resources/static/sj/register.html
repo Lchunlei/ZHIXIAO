@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta content="telephone=no" name="format-detection" />
+<link rel="stylesheet" href="../css/style.css"/>
+<link href="../css/logreg.css" rel="stylesheet" type="text/css">
+<link href="../css/iconfont/RjdaoIcon.css" rel="stylesheet" type="text/css">
+
+<title>注册</title>
+
+<script>
+(function (doc, win) {
+        var docEl = doc.documentElement,
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+            recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                if(clientWidth>=750){
+                    docEl.style.fontSize = '100px';
+                }else{
+                    docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                }
+            };
+
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    })(document, window);
+</script>
+
+</head>
+
+<body>
+<div id="Nav_bar">
+	<div class="left"><a href="#"  onclick="history.go(-1)"><img src="../img/left_arrow.png"></a></div>
+    <div class="center">注册</div>
+    <div class="right"><img src="../img/dian.png"></div>
+</div>
+<!--中间内容部分-->
+<form name="form1" method="post" action="/formuser/register">
+<div id="content">
+	<div class="txt01">手机号<input type="number" id="mobile" name="tel" class="text" value="" pattern="[0-9]*" tabindex="10" onChange="check_for_btn()" /></div>
+    <div class="txt01">用户名<input type="text" id="realname" name="name" class="text" tabindex="7" onChange="check_for_btn()" /></div>
+    <div class="txt01">密码
+        <input type="password" id="pass" name="pass" class="text"/>
+    </div>
+    <div class="txt01">确认密码<input type="password" id="pass2" name="pass2" class="text"/></div>
+</div>
+<input type="submit" id="btn" class="r_but" onClick="check()" value="确定注册">
+</form>
+<a href="../login.html" class="tlt">我已有账号，点此立即登录</a>
+
+
+
+<!---手机端底部 开始 --->
+<div class="f-height"></div>
+<footer>
+	<a href="" class="navname"><i class="icon-0449"></i><span>网站首页</span></a>
+    <a href="" class="navname"><i class="icon-0129"></i><span>投资项目</span></a>
+    <a href="" class="navname"><i class="icon-0261"></i><span>客服电话</span></a>
+    <a href="" class="navname"><i class="icon-0113"></i><span>我的投资</span></a>
+</footer>
+<!---手机端底部 结束 --->
+
+
+
+</body>	
+</html>
+

@@ -1,0 +1,54 @@
+html, body, ul, li, ol, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, legend, img{
+    margin:0;
+    padding:0;
+}
+body {
+    font-family: 'microsoft yahei','微软雅黑','abchanel-couture','华文细黑','STXHei','华文黑体','ST Heiti','MS黑体','MSHei','Arial','Helvetica','sans-serif';
+    background-color: #fff;
+    height: 100%;
+    max-width:7.5rem;
+    margin: 0 auto;
+}
+li, ul {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+li, ul { list-style-type: none;}
+img {
+    border: 0;
+    border: none;
+    width: 100%;
+}
+a, a:hover, a:visited {text-decoration: none;}
+
+a{text-decoration:none;}
+a:hover, a:focus{
+    color: #333;
+}
+a:active{
+     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+
+#content{width:6.9rem; overflow:auto; padding:0 0.3rem;}
+#content .txt01{width:100%; min-height:1.08rem; border-bottom:#dfdfdf solid 0.01rem; float:left; line-height:1.08rem; color:#666; font-size:0.3rem;}
+.r_but{ display:block;width:90%; height:0.98rem; background:#F94E44; line-height:0.98rem; border:none; font-size:0.32rem; color:#fff; text-align:center; margin:30px 5% 20px 5%;}
+select,input,textarea{border:0;outline:none;font-size:0.28rem; color:#999; width:80%; height:1rem; float:right; margin-right:0.1rem; border:none;}
+.txt01 label{float:right; width:14%; height:0.48rem; text-align:right; margin-top:0.3rem; vertical-align:middle; line-height:0.48rem; margin-left:0.8rem;}
+.txt01 span{ margin-bottom:-0.1rem;}
+.txt01 a{float:right; height:1rem; width:80%; text-align:right; color:#999;}
+/*弹出框样式*/
+#msg {height: 1em; text-align: center; position: fixed; top: 50%; margin-top: -1rem; line-height: 2rem; width: 100%; }
+#msg span {color: #ffffff; background: rgba(0, 0, 0, 0.5); height: 1.5em; padding: 0.5em 1.5em; border-radius: 6px; font-size:18px; font-family: "microsoft yahei"; }
+#btn {border-radius: 6px;}
+.tlt{
+	display:block;
+	width:94%;
+	height:28px;
+	margin:0 auto;
+	line-height:28px;
+	font-size:14px;
+	text-align:center;
+	color:#333;
+}

@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>热销产品</title>
+<meta name="keywords" content="热销产品"/>
+<meta name="description" content="热销产品" />
+<link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon"/>
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="css/style.css"/>
+<link href="css/iconfont/RjdaoIcon.css" rel="stylesheet" type="text/css">
+    <!--头条轮播S-->
+    <link href="css/head/swiper.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/head/common.css"/>
+    <link rel="stylesheet" type="text/css" href="css/head/index.css"/>
+    <!--头条轮播E-->
+<script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+<script type="text/javascript" src="js/slider.js"></script>
+    <!--头条轮播S-->
+    <script type="text/javascript" src="js/head/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript" src="js/head/swiper.min.js"></script>
+    <script type="text/javascript" src="js/head/common.js"></script>
+    <script type="text/javascript" src="js/head/lunbo.js"></script>
+    <!--头条轮播E-->
+<!--下拉动画-->
+<link rel="stylesheet" href="css/animate.min.css"/>
+<script type="text/javascript" src="js/wow.min.js"></script>
+<script>
+	if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+		new WOW().init();
+	};
+	$(function(){
+		
+	});
+</script>
+<!--下拉动画-->
+</head>
+
+<body>
+<div class="itemMain topm0">
+    <h2>热销商品</h2>
+    <div class="imglist">
+    	<a href="vist.html" class="item2 wow flipInY"><div class="pic"><img src="images/goods/pro-01.jpg"></div><span>磁疗仪</span></a>
+        <a href="vist.html" class="item2 wow flipInY"><div class="pic"><img src="images/goods/pro-02.jpg"></div><span>保健酒</span></a>
+        <a href="vist.html" class="item2 wow flipInY"><div class="pic"><img src="images/goods/pro-03.jpg"></div><span>艺术品</span></a>
+        <a href="vist.html" class="item2 wow flipInY"><div class="pic"><img src="images/goods/pro-04.jpg"></div><span>云南白茶</span></a>
+        <a href="vist.html" class="item2 wow flipInY"><div class="pic"><img src="images/goods/pro-05.jpg"></div><span>纪念币</span></a>
+        <a href="vist.html" class="item2 wow flipInY"><div class="pic"><img src="images/goods/pro-06.jpg"></div><span>百年名酒</span></a>
+    </div>
+</div>
+<!---投资项目 结束 --->
+
+
+
+<!---手机端底部 开始 --->
+<div class="f-height"></div>
+<footer>
+	<a href="index.html" class="navname"><i class="icon-0449"></i><span>网站首页</span></a>
+    <a href="user-tree.html" class="navname"><i class="icon-0129"></i><span>我的商圈</span></a>
+    <a href="add-order.html" class="navname"><i class="icon-0132"></i><span>报单中心</span></a>
+    <a href="user-index.html" class="navname"><i class="icon-0113"></i><span>我的投资</span></a>
+</footer>
+<!---手机端底部 结束 --->
+
+
+<!---申请窗口 S---->
+<div class="applyMain" id="applyMain" style="display:none;">
+	<div class="title"><span>请填写申请信息</span><i class="icon-0317" onclick="hideenlistDiv()"></i></div>
+    <input id="pronum" type="hidden" name="pronum" value="">
+    <div class="txt" style="margin-top:30px;">您的姓名：</div>
+    <input type="text" name="name" required placeholder="请输入您的姓名" autocomplete="off" class="input">
+    <div class="txt" style="margin-top:15px;">联系电话：</div>
+    <input type="text" name="name" required placeholder="请输入您的联系电话" autocomplete="off" class="input">
+    <div class="txt" style="margin-top:15px;">投资意向情况说明：</div>
+    <textarea name="textarea"  placeholder="请输入投资意向情况说明" class="textarea"></textarea>
+    <input type="submit" class="button" value="提   交">
+</div>
+<script type="text/javascript">
+function shoenlistDiv(form){
+    //点击报名按钮将值传入文本框中
+	var kcid=$(form).attr("pronum");
+	var oText=document.getElementById('pronum');
+    oText.value=kcid;
+	//alert(kcid);
+	//获取要显示的div对象
+    var  otherDiv=document.getElementById('applyMain');
+    //显示
+    otherDiv.style.display="block";
+	var  otherDiv=document.getElementById('fullscreenMask');
+	otherDiv.style.display="block";
+
+}
+function hideenlistDiv(){
+    //获取要显示的div对象
+    var  otherDiv=document.getElementById('applyMain');
+    //显示
+    otherDiv.style.display="none";
+	var  otherDiv=document.getElementById('fullscreenMask');
+	otherDiv.style.display="none";
+}
+</script>
+<!---申请窗口 E---->
+
+
+</body>
+</html>
