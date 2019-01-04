@@ -13,7 +13,7 @@ public class SysAdmin implements Serializable{
     private String password;
     private String nickName;
     private Integer usable;
-    private Integer sysRole;
+    private Integer sysRole;//0系统管理员1财务人员
     private Date cTime;
     private Date uTime;
 

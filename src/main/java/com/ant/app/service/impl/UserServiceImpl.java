@@ -47,6 +47,8 @@ public class UserServiceImpl implements UserService {
             result.setFail(Constants.USER_NULL);
         }else if(!user.getFirstPwd().equals(login.getFirstPwd())){
             result.setFail(Constants.PWD_ERR);
+        }else if(!user.getUserStatus().equals(0)){
+            result.setFail(Constants.USER_ICE);
         }else {
             if(user.getFirstPwd().equals(Constants.PWD)){
                 result.setResultCode(Constants.RE_SET_PWD);
@@ -118,8 +120,9 @@ public class UserServiceImpl implements UserService {
         user.setFirstPwd(Constants.PWD);
         user.setSecondPwd(Constants.PWD);
         user.setThirdPwd(Constants.PWD_LAST);
-        user.setJoinMoney(Constants.JOIN_MONEY);
-
+        if(user.getJoinMoney()==null){
+            user.setJoinMoney(Constants.JOIN_MONEY);
+        }
         SaleUser loginUser = userDao.selectUserById(userId);
         SaleUser refereeUser = userDao.selectUserByPhoneNum(user.getRefereePhoneNum());
         if(refereeUser==null){
@@ -199,9 +202,9 @@ public class UserServiceImpl implements UserService {
             user.setTreeSupId(preTreeSup.getUserId());
             userDao.insertUser(user);
             if(preTreeSup.getTreeRight()==null){
-                userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
+                userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
             }else if(preTreeSup.getTreeLeft()==null){
-                userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
+                userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
             }else {
                 throw new AddUserException();
             }

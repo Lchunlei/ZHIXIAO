@@ -74,7 +74,7 @@
 		<div class="left-nav">
 			<div id="side-nav">
 				<ul id="nav">
-					<li>
+					<li id="guan">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe726;</i>
 							<cite>管理员管理</cite>
@@ -131,6 +131,7 @@
 							</li>
 						</ul>
 					</li>
+					<!--
 					<li>
 						<a href="javascript:;">
 							<i class="iconfont">&#xe705;</i>
@@ -167,7 +168,7 @@
 							</li>
 						</ul>
 					</li>
-
+					-->
 					<!--
 					<li>
 						<a href="javascript:;">
@@ -288,6 +289,34 @@
 						return false;
 					}
 				});
+                $.ajax({
+                    url:"../pc/sys/auth"
+                    ,type:"GET"
+                    ,dataType:"json"
+                    ,success:function(data_resp){
+                        if('R000'==data_resp.resultCode){
+                            if("0"==data_resp.data){
+
+
+							}else{
+                                $("#guan").remove();
+
+							}
+                        }else {
+                            layer.msg(data_resp.resultMsg, {
+                                icon: 5,
+                                time: 1000
+                            });
+                        }
+                    }
+                    ,error:function(e){
+                        layer.msg('系统异常!', {
+                            icon: 5,
+                            time: 1000
+                        });
+                    }
+                });
+
 			});
 
 		</script>

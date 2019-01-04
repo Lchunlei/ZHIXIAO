@@ -34,8 +34,6 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
 			}, {
 				field: 'userName',title: '真实姓名'
 			}, {
-                field: 'userNick',title: '昵称'
-            }, {
 				field: 'phoneNum',title: '手机号'
             }, {
                 field: 'userStatus',width: 80,title: '状态',templet: '#userStatusTep'

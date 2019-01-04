@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Service
 public class TreeServiceImpl implements TreeService {
-    private final static String ME = "根节点";
+    private final static String ME = "我";
     @Resource
     UserDao userDao;
 

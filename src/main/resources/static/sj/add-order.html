@@ -88,10 +88,10 @@
 <!---手机端底部 开始 --->
 <div class="f-height"></div>
 <footer>
-    <a href="index.html" class="navname"><i class="icon-0449"></i><span>网站首页</span></a>
-    <a href="user-tree.html" class="navname"><i class="icon-0129"></i><span>我的商圈</span></a>
+    <a href="index.html" class="navname"><i class="icon-0449"></i><span>首页</span></a>
+    <a href="user-tree.html" class="navname"><i class="icon-0129"></i><span>我的团队</span></a>
     <a href="JavaScript:void(0)" class="navname" style="background-color: Wheat"><i class="icon-0132"></i><span>报单中心</span></a>
-    <a href="user-index.html" class="navname"><i class="icon-0113"></i><span>我的投资</span></a>
+    <a href="user-index.html" class="navname"><i class="icon-0113"></i><span>个人中心</span></a>
 </footer>
 <!---手机端底部 结束 --->
 
@@ -135,7 +135,7 @@
                     alert("登陆已失效，请重新登陆！");
                     window.location.href='login.html';
                 }else if('R000'==data_resp.resultCode){
-                    alert("添加成功，请耐心等待系统审核！");
+                    alert("添加成功！");
                     hideenlistDiv();
                 }else {
                     alert(data_resp.resultMsg);

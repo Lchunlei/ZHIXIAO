@@ -41,6 +41,17 @@ public class UserController {
     }
 
     /**
+     * 用户退出
+     */
+    @RequestMapping(value = "/sign/out",method = RequestMethod.GET)
+    public AppWebResult signOut(HttpSession session){
+        AppWebResult result = new AppWebResult();
+        session.removeAttribute(Constants.USER_ID);
+        log.info("用户退出返回--->"+result);
+        return result;
+    }
+
+    /**
      * 用户添加
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
@@ -52,6 +63,7 @@ public class UserController {
             result.setResultMsg(Constants.NO_LOGIN);
         }else {
             Integer nowUserCore = (int)obj;
+            saleUser.setRegisteCore(0);
             userService.addSaleUser(saleUser,nowUserCore,result);
             log.info("用户添加返回--->"+result);
         }
@@ -107,8 +119,6 @@ public class UserController {
         if(obj==null){
             result.setResultCode(Constants.NO_LOGIN_CODE);
             result.setResultMsg(Constants.NO_LOGIN);
-        }else if(Constants.PWD_LAST.equals(thirdPwd)){
-            result.setFail(Constants.PWD_NEED_RE);
         }else {
             Integer nowUserId = (int)obj;
             log.info("查看用户资产--->"+nowUserId+"***>"+thirdPwd);
@@ -122,5 +132,27 @@ public class UserController {
         return result;
     }
 
+    /**
+     * 查看是否是报单中心
+     */
+    @RequestMapping(value = "/core/status",method = RequestMethod.GET)
+    public AppWebResult findCoreStatus(HttpSession session){
+        AppWebResult<SaleUser> result = new AppWebResult();
+        Object obj = session.getAttribute(Constants.USER_ID);
+        if(obj==null){
+            result.setResultCode(Constants.NO_LOGIN_CODE);
+            result.setResultMsg(Constants.NO_LOGIN);
+        }else {
+            Integer nowUserId = (int)obj;
+            log.info("查看是否是报单中心--->"+nowUserId);
+            userService.userInfo(nowUserId,result);
+            if(!result.getData().getRegisteCore().equals(1)){
+                result.setFail(Constants.AUTH_LESS);
+                result.setData(null);
+            }
+            log.info("查看是否是报单中心--->"+result);
+        }
+        return result;
+    }
 
 }

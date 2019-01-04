@@ -58,8 +58,6 @@ public class TreeController {
         if(obj==null){
             result.setResultCode(Constants.NO_LOGIN_CODE);
             result.setResultMsg(Constants.NO_LOGIN);
-        }else if(Constants.PWD.equals(secondPwd)){
-            result.setFail(Constants.PWD_NEED_RE);
         }else {
             int userId = (int)obj;
             treeService.preFindTree(userId,secondPwd,result);

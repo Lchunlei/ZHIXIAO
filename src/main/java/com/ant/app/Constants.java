@@ -9,8 +9,8 @@ public class Constants {
 
     public static final String SUCCESS_MSG = "操作成功";
     public static final String ERR_MSG = "操作失败";
-    public static final String DB_ERROR = "本地数据库异常";
     public static final String USER_NULL = "账号不存在！";
+    public static final String USER_ICE = "账号被冻结，请联系管理员！";
     public static final String PWD_ERR = "密码错误！";
     public static final String USE_ERR = "权限被禁用，请联系管理员！";
     public static final String USER_ID = "user_id";
@@ -24,6 +24,6 @@ public class Constants {
     public static final String REFORE_USER_NULL = "推荐人不存在！";
     public static final String USERID_NULL = "用户不存在！";
     public static final String PHONE_HAD = "您的手机号已被注册！";
-    public static final String PWD_NEED_RE = "默认密码无效，请重置密码！";
+
 
 }

@@ -26,7 +26,7 @@
 										<ul class="layui-row layui-col-space10 layui-this">
 											<li class="layui-col-xs3">
 												<a href="javascript:void(0);" target="_blank">
-													<i class="layui-icon">1575900</i>
+													<i class="layui-icon" id="t1">0</i>
 													<cite>总资产</cite>
 													<!--
 													<p><span>Layui作者一个字节一个字节撸出来的精华，数以万计用户的指明灯</span></p>
@@ -35,7 +35,7 @@
 											</li>
 											<li class="layui-col-xs3">
 												<a href="javascript:void(0);" target="_blank">
-													<i class="layui-icon">6923</i>
+													<i class="layui-icon" id="t2">0</i>
 													<cite>会员总数</cite>
 													<!--
 													<p><span>Layui官方出品的专业后台管理模板</span></p>
@@ -44,7 +44,7 @@
 											</li>
 											<li class="layui-col-xs3">
 												<a href="javascript:void(0);" target="_blank">
-													<i class="layui-icon">35400</i>
+													<i class="layui-icon" id="t3">0</i>
 													<cite>昨日收益</cite>
 													<!--
 													<p><span>Layui官方出品的一款Web即时通讯前端解决方案</span></p>
@@ -53,7 +53,7 @@
 											</li>
 											<li class="layui-col-xs3">
 												<a href="javascript:void(0);" target="_blank">
-													<i class="layui-icon">79</i>
+													<i class="layui-icon" id="t4">0</i>
 													<cite>昨日加盟</cite>
 													<!--
 													<p><span>谢谢关注，更欢迎提意见，虽然我不一定能做好~~</span></p>
@@ -400,6 +400,25 @@
 			    $(id).html(str);
 			    console.log(str);
 			 };
+            $.ajax({
+                url:"../../pc/sys/index/init"
+                ,type:"GET"
+                ,dataType:"json"
+                ,success:function(data_resp){
+                    if('R000'==data_resp.resultCode){
+                        $("#t1").text(data_resp.data.totalIncomeYuan);
+                        $("#t2").text(data_resp.data.totalUser);
+                        $("#t3").text(data_resp.data.yesIncomeYuan);
+                        $("#t4").text(data_resp.data.yesUser);
+                    }
+                }
+                ,error:function(e){
+                    layer.msg('系统异常!', {
+                        icon: 5,
+                        time: 1000
+                    });
+                }
+            });
 		});
 	</script>
 

@@ -1,5 +1,7 @@
 package com.ant.app.model;
 
+import com.ant.app.utils.MoneyUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,7 +13,6 @@ public class SaleUser implements Serializable{
 
     private Integer userId;
     private String userName;
-    private String userNick;
     private String phoneNum;
     private String firstPwd;
     private String secondPwd;
@@ -34,12 +35,12 @@ public class SaleUser implements Serializable{
 
     private String refereePhoneNum;
     private String oldFirstPwd;
+    private String joinMoneyYuan;
     @Override
     public String toString() {
         return "SaleUser{" +
                 "userId=" + userId +
                 ", userName='" + userName + '\'' +
-                ", userNick='" + userNick + '\'' +
                 ", phoneNum='" + phoneNum + '\'' +
                 ", puserId=" + puserId +
                 ", refereeId=" + refereeId +
@@ -49,6 +50,14 @@ public class SaleUser implements Serializable{
                 ", uTime=" + uTime +
                 ", cTime=" + cTime +
                 '}';
+    }
+
+    public String getJoinMoneyYuan() {
+        return joinMoneyYuan;
+    }
+
+    public void setJoinMoneyYuan(String joinMoneyYuan) {
+        this.joinMoneyYuan = joinMoneyYuan;
     }
 
     public Integer getTotalIncome() {
@@ -163,14 +172,6 @@ public class SaleUser implements Serializable{
         this.userName = userName;
     }
 
-    public String getUserNick() {
-        return userNick;
-    }
-
-    public void setUserNick(String userNick) {
-        this.userNick = userNick;
-    }
-
     public String getPhoneNum() {
         return phoneNum;
     }
@@ -216,6 +217,7 @@ public class SaleUser implements Serializable{
     }
 
     public void setJoinMoney(Integer joinMoney) {
+        this.joinMoneyYuan = MoneyUtil.FenTurnYuan(joinMoney+"");
         this.joinMoney = joinMoney;
     }
 

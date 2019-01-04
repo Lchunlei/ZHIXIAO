@@ -39,7 +39,9 @@
 <div id="Nav_bar">
 	<div class="left"><a href="#"  onclick="history.go(-1)"><img src="img/left_arrow.png"></a></div>
     <div class="center">登录</div>
+    <!--
     <div class="right"><img src="img/dian.png"></div>
+    -->
 </div>
 <!--中间内容部分-->
 <div id="content">
@@ -63,15 +65,16 @@
 -->
 <!--
 <footer>
-	<a href="" class="navname"><i class="icon-0449"></i><span>网站首页</span></a>
+	<a href="" class="navname"><i class="icon-0449"></i><span>首页</span></a>
     <a href="" class="navname"><i class="icon-0129"></i><span>投资项目</span></a>
     <a href="" class="navname"><i class="icon-0261"></i><span>客服电话</span></a>
-    <a href="" class="navname"><i class="icon-0113"></i><span>我的投资</span></a>
+    <a href="" class="navname"><i class="icon-0113"></i><span>个人中心</span></a>
 </footer>
 -->
 <!---手机端底部 结束 --->
-
+<!--
 <a href="register.html" class="tlt">我还没有注册，点此立即注册</a>
+-->
 <script type="text/javascript" charset="utf-8">
     function loginApp() {
         var data_req = new FormData(document.getElementById("loginfrom"));
@@ -85,7 +88,7 @@
                 if('R000'==data_resp.resultCode){
                     window.location.href='index.html';
                 }else if('RE00'==data_resp.resultCode){
-                    alert("您的账户尚未激活，请重置密码激活！");
+                    alert("请您在个人中心的设置功能修改您的密码！");
                     window.location.href='index.html';
                 }else {
                     alert(data_resp.resultMsg);
