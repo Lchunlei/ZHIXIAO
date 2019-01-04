@@ -1,46 +1,143 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>兰格商务</title>
-<meta name="keywords" content="兰格商务" />
-<meta name="description" content="兰格商务" />
-<link rel="icon" href="/favicon.ico" mce_href="/favicon.ico" type="image/x-icon"/>
-<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<link rel="stylesheet" href="css/animate.min.css"/>
-<link rel="stylesheet" href="css/style.css"/>
-<script type="text/javascript" src="js/wow.min.js"></script>
-<link href="css/iconfont/RjdaoIcon.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
-<script type="text/javascript" src="js/slider.js"></script>
-<script>
-    //顶端图片抖动
-    if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
-        new WOW().init();
-    };
-    $(function(){
+    <meta charset="utf-8">
+    <title>兰格商务</title>
+    <meta name="keywords" content="兰格商务" />
+    <meta name="description" content="兰格商务" />
+    <link rel="icon" href="/favicon.ico" mce_href="/favicon.ico" type="image/x-icon"/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="css/animate.min.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/lb/base.css" />
+    <link rel="stylesheet" href="css/lb/swiper.min.css">
+    <link rel="stylesheet" href="css/lb/style.css" />
+    <script type="text/javascript" src="js/wow.min.js"></script>
+    <link href="css/iconfont/RjdaoIcon.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript" src="js/slider.js"></script>
+    <script>
+        //顶端图片抖动
+        if (!(/msie [6|7|8|9]/i.test(navigator.userAgent))){
+            new WOW().init();
+        };
+        $(function(){
 
-    });
-</script>
+        });
+    </script>
 </head>
 
 <body>
-<div class="imgBannerModel wow flipInX">
-    <img src="images/img3.jpg">
+<div style="background-color: white">
+    <div class="imgBannerModel wow flipInX">
+        <img src="images/img3.jpg">
+    </div>
+    <div class="itemMain topm">
+        <h2>我的资产</h2>
+    </div>
+
+    <div class="applyOne" id="applyOne">
+
+        <form>
+            <div class="txt" style="margin-top:30px;">密码：</div>
+            <input type="text" id="thirdPwd" name="thirdPwd" required placeholder="三级密码" autocomplete="off" class="input">
+        </form>
+        <input type="button" class="button" onclick="lookIncome()" value="查   看">
+
+    </div>
 </div>
-<div class="itemMain topm">
-    <h2>我的资产</h2>
+<div style="background-color: white" id="tongji">
+    <div class="itemMain topm">
+        <h2>资金统计</h2>
+    </div>
+    <div class="itemMain topm2">
+        <a class="item wow bounceInDown">
+            <div class="info">
+                <div class="tx wl">
+                    <em class="c1">3988856.23</em>
+                    <span>账户余额</span>
+                </div>
+            </div>
+        </a>
+        <a class="item wow bounceInDown">
+            <div class="info">
+                <div class="tx wl">
+                    <em class="c1">496</em>
+                    <span>系统积分</span>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="itemMain topm">
+        <h2>收入列表</h2>
+    </div>
+</div>
+<div class="container" id="liebiao">
+    <table class="bang_list" width="100%">
+        <thead>
+        <tr><td width="30%">消费时间</td><td width="25%">消费项目</td><td width="25%">服务人员</td><td width="20%">消费金额</td></tr>
+        <tbody>
+        <tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr><tr>
+            <td>2017-09-30 17:23:15</td>
+            <td>宠物美容</td>
+            <td>董小姐</td>
+            <td class="red">￥36</td>
+        </tr>
+        </tbody>
+        </thead>
+    </table>
 </div>
 
-<div class="applyOne" id="applyMain">
-
-    <form>
-        <div class="txt" style="margin-top:30px;">密码：</div>
-        <input type="text" id="thirdPwd" name="thirdPwd" required placeholder="三级密码" autocomplete="off" class="input">
-    </form>
-    <input type="button" class="button" onclick="lookIncome()" value="查   看">
-
-</div>
 
 <script type="text/javascript">
 
