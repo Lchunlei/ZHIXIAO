@@ -57,5 +57,17 @@ public interface UserDao {
     @Update("UPDATE sale_user SET firstPwd=#{firstPwd},secondPwd=#{secondPwd},thirdPwd=#{thirdPwd},uTime=NOW() WHERE userId=${userId}")
     Integer updateUserPwd(SaleUser saleUser);
 
+    /**
+     * 收入修改
+     */
+    @Update("UPDATE sale_user SET balance=${money}+balance WHERE userId=${userId}")
+    Integer addBalance(@Param("money")Integer money,@Param("userId") Integer userId);
+
+    @Update("UPDATE sale_user SET luckEnd=1+luckEnd,balance=${money}+balance WHERE userId=${userId}")
+    Integer addOneSunLuck(@Param("money")Integer money,@Param("userId") Integer userId);
+
+    @Update("UPDATE sale_user SET balance=balance-${money} WHERE userId=${userId}")
+    Integer minusBalance(@Param("money")Integer money,@Param("userId") Integer userId);
+
 
 }

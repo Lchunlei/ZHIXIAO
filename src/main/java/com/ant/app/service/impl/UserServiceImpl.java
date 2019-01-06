@@ -139,6 +139,7 @@ public class UserServiceImpl implements UserService {
         }else if(loginUser.getRegisteCore().equals(0)){
             result.setFail(Constants.AUTH_LESS);
         }else if(oldUser!=null){
+            //注册手机号已经存在
             result.setFail(Constants.PHONE_HAD);
         }else if(refereeUser.getTreeLeft()==null){
             user.setTreeSupId(refereeUser.getUserId());
@@ -201,10 +202,10 @@ public class UserServiceImpl implements UserService {
             log.info("预父树---》"+preTreeSup);
             user.setTreeSupId(preTreeSup.getUserId());
             userDao.insertUser(user);
-            if(preTreeSup.getTreeRight()==null){
-                userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
-            }else if(preTreeSup.getTreeLeft()==null){
+            if(preTreeSup.getTreeLeft()==null){
                 userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
+            }else if(preTreeSup.getTreeRight()==null){
+                userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
             }else {
                 throw new AddUserException();
             }

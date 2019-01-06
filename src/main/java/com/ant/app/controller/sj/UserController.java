@@ -4,7 +4,10 @@ import com.ant.app.Constants;
 import com.ant.app.entity.AppWebResult;
 import com.ant.app.entity.req.UserLogin;
 import com.ant.app.model.SaleUser;
+import com.ant.app.model.UserIncome;
+import com.ant.app.service.InComeService;
 import com.ant.app.service.UserService;
+import com.ant.app.utils.MoneyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author lchunlei
@@ -24,6 +28,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    InComeService inComeService;
 
     /**
      * 用户登录
@@ -114,7 +120,7 @@ public class UserController {
      */
     @RequestMapping(value = "/income",method = RequestMethod.GET)
     public AppWebResult findUserInfo(HttpSession session,String thirdPwd){
-        AppWebResult<SaleUser> result = new AppWebResult();
+        AppWebResult<List<UserIncome>> result = new AppWebResult();
         Object obj = session.getAttribute(Constants.USER_ID);
         if(obj==null){
             result.setResultCode(Constants.NO_LOGIN_CODE);
@@ -122,10 +128,15 @@ public class UserController {
         }else {
             Integer nowUserId = (int)obj;
             log.info("查看用户资产--->"+nowUserId+"***>"+thirdPwd);
-            userService.userInfo(nowUserId,result);
-            if(!result.getData().getThirdPwd().equals(thirdPwd)){
+            AppWebResult<SaleUser> re = new AppWebResult();
+            userService.userInfo(nowUserId,re);
+            if(!re.getData().getThirdPwd().equals(thirdPwd)){
                 result.setFail(Constants.PWD_ERR);
                 result.setData(null);
+            }else {
+                inComeService.getMyIncomes(nowUserId,result);
+                result.setBalance(MoneyUtil.FenTurnYuan(re.getData().getBalance()+""));
+                result.setCoin(re.getData().getCoin());
             }
             log.info("查看用户资产返回--->"+result);
         }

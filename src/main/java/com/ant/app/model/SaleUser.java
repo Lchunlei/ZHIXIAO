@@ -24,6 +24,7 @@ public class SaleUser implements Serializable{
     private Integer treeRight;
     private Integer refereeId;//推荐人ID
     private Integer puserId;//所属报单中心ID
+    private Integer luckEnd;//0幸运分红未结束1已结束
     private Integer joinMoney;//加盟费
     private Integer totalIncome;
     private Integer balance;
@@ -50,6 +51,14 @@ public class SaleUser implements Serializable{
                 ", uTime=" + uTime +
                 ", cTime=" + cTime +
                 '}';
+    }
+
+    public Integer getLuckEnd() {
+        return luckEnd;
+    }
+
+    public void setLuckEnd(Integer luckEnd) {
+        this.luckEnd = luckEnd;
     }
 
     public String getJoinMoneyYuan() {

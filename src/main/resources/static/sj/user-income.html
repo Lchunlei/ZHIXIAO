@@ -54,7 +54,7 @@
         <a class="item wow bounceInDown">
             <div class="info">
                 <div class="tx wl">
-                    <em class="c1">3988856.23</em>
+                    <em class="c1" id="balance">****.**</em>
                     <span>账户余额</span>
                 </div>
             </div>
@@ -62,7 +62,7 @@
         <a class="item wow bounceInDown">
             <div class="info">
                 <div class="tx wl">
-                    <em class="c1">496</em>
+                    <em class="c1" id="coin">****</em>
                     <span>系统积分</span>
                 </div>
             </div>
@@ -75,64 +75,13 @@
 <div class="container" id="liebiao">
     <table class="bang_list" width="100%">
         <thead>
-        <tr><td width="30%">消费时间</td><td width="25%">消费项目</td><td width="25%">服务人员</td><td width="20%">消费金额</td></tr>
-        <tbody>
         <tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
-        </tr><tr>
-            <td>2017-09-30 17:23:15</td>
-            <td>宠物美容</td>
-            <td>董小姐</td>
-            <td class="red">￥36</td>
+            <td width="40%">收益时间</td>
+            <td width="30%">收益来源</td>
+            <td width="30%">收益金额</td>
         </tr>
+        <tbody id="incomes">
+
         </tbody>
         </thead>
     </table>
@@ -150,8 +99,19 @@
             ,contentType:false
             ,success:function(data_resp){
                 if('R000'==data_resp.resultCode){
+                    $("#balance").text(data_resp.balance);
+                    $("#coin").text(data_resp.coin);
+                    var list = data_resp.data;
+                    var tbody = "";
 
-
+                    // 底下施用each进行遍历
+                    $.each(list, function(n, value) {
+                        var trs = "";
+                        trs += "<tr><td>" + value.cTime + "</td><td>" + value.ins + "</td><td class='red'>￥" + value.moneyYuan + "</td></tr>";
+                        tbody += trs;
+                        });
+                    $("#incomes").empty();
+                    $("#incomes").append(tbody);
                 }else if("R400"==data_resp.resultCode){
                     alert(data_resp.resultMsg);
                     window.location.href='login.html';

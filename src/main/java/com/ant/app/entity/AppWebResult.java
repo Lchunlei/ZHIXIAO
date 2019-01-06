@@ -7,6 +7,8 @@ package com.ant.app.entity;
 public class AppWebResult<T> {
     private String resultCode;
     private String resultMsg;
+    private String balance;//账户余额
+    private Integer coin;//系统积分
     private T data;
 
     public AppWebResult() {
@@ -25,6 +27,23 @@ public class AppWebResult<T> {
         this.resultCode="R404";
         this.resultMsg = failMsg;
     }
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public Integer getCoin() {
+        return coin;
+    }
+
+    public void setCoin(Integer coin) {
+        this.coin = coin;
+    }
+
     public T getData() {
         return data;
     }

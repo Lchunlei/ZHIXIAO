@@ -4,9 +4,11 @@ import com.ant.app.Constants;
 import com.ant.app.entity.AppWebResult;
 import com.ant.app.entity.req.AdminLogin;
 import com.ant.app.entity.resp.IndexData;
+import com.ant.app.entity.tree.TreNode;
 import com.ant.app.model.SysAdmin;
 import com.ant.app.service.AdminService;
 import com.ant.app.service.SysService;
+import com.ant.app.service.TreeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +31,32 @@ public class SysController {
     SysService sysService;
     @Autowired
     AdminService adminService;
+    @Autowired
+    TreeService treeService;
 
     /**
      * 初始化首页
      */
     @RequestMapping(value = "/index/init",method = RequestMethod.GET)
-    public AppWebResult loginApp(){
+    public AppWebResult initIndex(){
         AppWebResult<IndexData> result = new AppWebResult();
         sysService.initPcIndex(result);
         log.info("初始化首页--->"+result);
         return result;
+    }
+    /**
+     * 查看树
+     */
+    @RequestMapping(value = "/tree/init",method = RequestMethod.GET)
+    public TreNode loginApp(Integer nodeUserId){
+        AppWebResult<TreNode> result = new AppWebResult();
+        log.info("PC加载树节点---》"+nodeUserId);
+        treeService.initTree(nodeUserId,result);
+        if(Constants.SUCCESS_CODE.equals(result.getResultCode())){
+            return result.getData();
+        }else {
+            return null;
+        }
     }
 
     /**

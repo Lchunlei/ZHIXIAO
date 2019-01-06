@@ -31,6 +31,7 @@ public class TreeController {
      */
     @RequestMapping(value = "/init",method = RequestMethod.GET)
     public TreNode treeInit(HttpSession session,Integer nodeUserId){
+        log.info("加载树节点---》"+nodeUserId);
         AppWebResult<TreNode> result = new AppWebResult();
         if(session.getAttribute(Constants.USER_ID)==null){
             return null;
