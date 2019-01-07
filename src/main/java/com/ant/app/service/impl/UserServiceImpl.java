@@ -13,6 +13,7 @@ import com.ant.app.exception.AddUserException;
 import com.ant.app.model.SaleUser;
 import com.ant.app.model.SysAdmin;
 import com.ant.app.model.SysLog;
+import com.ant.app.service.InComeService;
 import com.ant.app.service.UserService;
 import com.ant.app.utils.TreeUtil;
 import org.slf4j.Logger;
@@ -38,6 +39,8 @@ public class UserServiceImpl implements UserService {
     SysLogDao sysLogDao;
     @Autowired
     AdminDao adminDao;
+    @Autowired
+    InComeService inComeService;
 
     @Override
     public void appLogin(UserLogin login, AppWebResult<Integer> result) {
@@ -117,11 +120,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addSaleUser(SaleUser user, Integer userId, AppWebResult result) {
+        Boolean addSuccess = false;
         user.setFirstPwd(Constants.PWD);
         user.setSecondPwd(Constants.PWD);
         user.setThirdPwd(Constants.PWD_LAST);
         if(user.getJoinMoney()==null){
             user.setJoinMoney(Constants.JOIN_MONEY);
+        }else {
+            int coin = user.getJoinMoney();
+            user.setCoin(coin);
+            user.setJoinMoney(coin*100);
         }
         SaleUser loginUser = userDao.selectUserById(userId);
         SaleUser refereeUser = userDao.selectUserByPhoneNum(user.getRefereePhoneNum());
@@ -145,10 +153,12 @@ public class UserServiceImpl implements UserService {
             user.setTreeSupId(refereeUser.getUserId());
             userDao.insertUser(user);
             userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
+            addSuccess=true;
         }else if(refereeUser.getTreeRight()==null){
             user.setTreeSupId(refereeUser.getUserId());
             userDao.insertUser(user);
             userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
+            addSuccess=true;
         }else {
             int floorTotal = findFloorTotal(user.getRefereeId());
             log.info("用户--"+user.getRefereeId()+"--下线层数--》"+floorTotal);
@@ -202,6 +212,7 @@ public class UserServiceImpl implements UserService {
             log.info("预父树---》"+preTreeSup);
             user.setTreeSupId(preTreeSup.getUserId());
             userDao.insertUser(user);
+            addSuccess=true;
             if(preTreeSup.getTreeLeft()==null){
                 userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
             }else if(preTreeSup.getTreeRight()==null){
@@ -210,7 +221,10 @@ public class UserServiceImpl implements UserService {
                 throw new AddUserException();
             }
         }
-
+        //异步刷新收益
+        if(addSuccess){
+            this.threadTo(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId());
+        }
     }
 
     @Override
@@ -247,4 +261,19 @@ public class UserServiceImpl implements UserService {
         }
         return i;
     }
+    public void threadTo(Integer userId){
+        new Thread() {
+            public void run() {
+                try {
+                    log.info("-------异步计算收益S--------");
+                    inComeService.refreshIncome(userId);
+                    log.info("-------异步计算收益E--------");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.info(e.getMessage(),e);
+                }
+            }
+        }.start();
+    }
+
 }

@@ -46,7 +46,7 @@
 
     </div>
 </div>
-<div style="background-color: white" id="tongji">
+<div style="background-color: white;display:none;" id="tongji">
     <div class="itemMain topm">
         <h2>资金统计</h2>
     </div>
@@ -72,7 +72,7 @@
         <h2>收入列表</h2>
     </div>
 </div>
-<div class="container" id="liebiao">
+<div class="container" id="liebiao" style="display:none;">
     <table class="bang_list" width="100%">
         <thead>
         <tr>
@@ -99,6 +99,14 @@
             ,contentType:false
             ,success:function(data_resp){
                 if('R000'==data_resp.resultCode){
+                    //获取要显示的div对象
+                    var  otherDiv=document.getElementById('liebiao');
+                    //显示
+                    otherDiv.style.display="block";
+                    //获取要显示的div对象
+                    var  otherDiv=document.getElementById('tongji');
+                    //显示
+                    otherDiv.style.display="block";
                     $("#balance").text(data_resp.balance);
                     $("#coin").text(data_resp.coin);
                     var list = data_resp.data;
@@ -109,7 +117,7 @@
                         var trs = "";
                         trs += "<tr><td>" + value.cTime + "</td><td>" + value.ins + "</td><td class='red'>￥" + value.moneyYuan + "</td></tr>";
                         tbody += trs;
-                        });
+                    });
                     $("#incomes").empty();
                     $("#incomes").append(tbody);
                 }else if("R400"==data_resp.resultCode){

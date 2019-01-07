@@ -24,7 +24,8 @@ public class SaleUser implements Serializable{
     private Integer treeRight;
     private Integer refereeId;//推荐人ID
     private Integer puserId;//所属报单中心ID
-    private Integer luckEnd;//0幸运分红未结束1已结束
+    private Integer luckEnd;//幸运分红向下最大30
+    private Integer departEnd;//部门奖向下最大20
     private Integer joinMoney;//加盟费
     private Integer totalIncome;
     private Integer balance;
@@ -51,6 +52,14 @@ public class SaleUser implements Serializable{
                 ", uTime=" + uTime +
                 ", cTime=" + cTime +
                 '}';
+    }
+
+    public Integer getDepartEnd() {
+        return departEnd;
+    }
+
+    public void setDepartEnd(Integer departEnd) {
+        this.departEnd = departEnd;
     }
 
     public Integer getLuckEnd() {

@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface UserDao {
 
-    @Insert("INSERT INTO sale_user(`userName`,`phoneNum`,`treeSupId`,`puserId`, `refereeId`,`firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`joinMoney`,`cTime`) VALUES (#{userName},#{phoneNum},#{treeSupId},#{puserId},#{refereeId},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},#{joinMoney},NOW())")
+    @Insert("INSERT INTO sale_user(`userName`,`phoneNum`,`treeSupId`,`puserId`, `refereeId`,`firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`joinMoney`,`coin`,`cTime`) VALUES (#{userName},#{phoneNum},#{treeSupId},#{puserId},#{refereeId},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},#{joinMoney},#{coin},NOW())")
     Integer insertUser(SaleUser saleUser);
 
     @Select("SELECT * FROM sale_user WHERE phoneNum=#{phoneNum}")

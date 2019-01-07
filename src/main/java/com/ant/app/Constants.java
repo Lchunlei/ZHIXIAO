@@ -5,7 +5,11 @@ public class Constants {
     public static final String NO_LOGIN_CODE = "R400";
     public final static String PWD = "123456";
     public final static String PWD_LAST = "111111";
-    public final static Integer JOIN_MONEY = 390000;
+    public final static Integer JOIN_MONEY = 390000;//默认加盟费
+    public final static Integer BU_MEN_MONEY = 1000;//部门奖单人奖励
+    public final static double MANAGE_MONEY = 0.95;//部门管理费
+    public final static double DRAW_SERVICE_MONEY = 0.05;//提现手续费
+
 
     public static final String SUCCESS_MSG = "操作成功";
     public static final String ERR_MSG = "操作失败";
@@ -24,6 +28,7 @@ public class Constants {
     public static final String REFORE_USER_NULL = "推荐人不存在！";
     public static final String USERID_NULL = "用户不存在！";
     public static final String PHONE_HAD = "您的手机号已被注册！";
+    public static final String APPLY_DRAW_ING = "审核中";
 
     public static final String XIAO_YI_FEN_HONG = "效益分红";
     public static final String XING_YUN_FEN_HONG = "幸运分红";

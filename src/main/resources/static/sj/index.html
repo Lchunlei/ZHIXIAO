@@ -104,7 +104,7 @@
     <!--
 	<div class="cl"><a href="#" onclick="tiXianWin(this)"><i class="icon-0133 c1 wow fadeInDown"></i><span>体现申请</span></a></div>
     -->
-    <div class="cl"><a href="user-income.html"><i class="icon-0127 c2 wow fadeInUp"></i><span>我的资产</span></a></div>
+    <div class="cl"><a href="user-draw.html"><i class="icon-0127 c2 wow fadeInUp"></i><span>提现中心</span></a></div>
     <div class="cl"><a href="#" onclick="shoenlistDiv(this)"><i class="icon-0879 c3 wow fadeInDown"></i><span>报单中心</span></a></div>
     <!--
     <div class="cl"><a href=""><i class="icon-0488 c4 wow fadeInUp"></i><span>信息披露</span></a></div>
@@ -270,39 +270,9 @@
     <input type="button" class="button" onclick="addUser()" value="提   交">
 </div>
 
-<!---提现窗口 S---->
-<div class="applyMain" id="tiXianFrom" style="display:none;">
-    <div class="title"><span>申请提现表单</span><i class="icon-0317" onclick="closeTiXianWin()"></i></div>
-    <form id="tiXian">
-        <div class="txt" style="margin-top:15px;">体现金额：</div>
-        <input type="text" name="joinMoney" required placeholder="单位（元）不支持小数" autocomplete="off" class="input">
-
-        <div class="txt" style="margin-top:15px;">账户密码：</div>
-        <input type="text" name="refereePhoneNum" required placeholder="请输入三级密码" autocomplete="off" class="input">
-    </form>
-    <input type="button" class="button" onclick="tiXian()" value="提   交">
-</div>
-
 <script type="text/javascript">
 
-    function tiXian() {
-        //获取要显示的div对象
-        var  otherDiv=document.getElementById('tiXianFrom');
-        //显示
-        otherDiv.style.display="block";
-    }
 
-    function tiXianWin() {
-        //获取要显示的div对象
-        var  otherDiv=document.getElementById('tiXianFrom');
-        //显示
-        otherDiv.style.display="block";
-    }
-
-    function closeTiXianWin() {
-        var  otherDiv=document.getElementById('tiXianFrom');
-        otherDiv.style.display="none";
-    }
     function addUser() {
         var data_req = new FormData(document.getElementById("addUser"));
         $.ajax({

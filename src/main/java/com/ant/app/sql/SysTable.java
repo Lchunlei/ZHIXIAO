@@ -14,6 +14,9 @@ public class SysTable {
     public static final String USER_ID = "userId";
     public static final String USER_NAME = "userName";
 
+    public static final String USER_DRAW = "user_draw";
+    public static final String DRAW_ID = "drawId";
+    public static final String DRAW_WAY_USER = "drawWayUser";
 
 
     public static final String C_TIME = "cTime";
