@@ -36,7 +36,6 @@ public class InComeServiceImpl implements InComeService{
         SaleUser newUser = userDao.selectUserById(newUserId);
         if(newUser!=null){
             pingHengJiang(newUser);
-            guanLiJiang(newUser);
             buMenJiang(newUser);
             reZuzhiJiang(newUser);
             reXingYunFenHong(newUser);
@@ -58,130 +57,155 @@ public class InComeServiceImpl implements InComeService{
 
     //平衡奖(先计算6层)
     private void pingHengJiang(SaleUser newUser){
-        if(newUser.getJoinMoney()>0){
-            //上一层
-            SaleUser oneUser = userDao.selectUserById(newUser.getTreeSupId());
-            if(newUser.getUserId().equals(oneUser.getTreeRight())){
-                int oneMoney = (int)(newUser.getJoinMoney()*Constants.MANAGE_MONEY);
-                userIncomeDao.insertUserIncome(new UserIncome(newUser.getTreeSupId(), Constants.PING_HENG_JIANG,oneMoney));
-                userDao.addBalance(oneMoney,newUser.getTreeSupId());
-                //上2层
-                SaleUser twoUser = userDao.selectUserById(userDao.selectUserById(newUser.getTreeSupId()).getTreeSupId());
-                SaleUser lUser = userDao.selectUserById(twoUser.getTreeLeft());
-                SaleUser rUser = userDao.selectUserById(twoUser.getTreeRight());
-                if(lUser.getTreeRight()!=null&&lUser.getTreeLeft()!=null&&rUser.getTreeRight()!=null&&rUser.getTreeLeft()!=null){
-                    SaleUser u1 = userDao.selectUserById(lUser.getTreeRight());
-                    SaleUser u2 = userDao.selectUserById(lUser.getTreeLeft());
-                    SaleUser u3 = userDao.selectUserById(rUser.getTreeRight());
-                    SaleUser u4 = userDao.selectUserById(rUser.getTreeLeft());
-                    if(u1.getJoinMoney()>0&&u2.getJoinMoney()>0&&u3.getJoinMoney()>0&&u4.getJoinMoney()>0){
-                        int mpney = (int)(newUser.getJoinMoney()/2*Constants.MANAGE_MONEY);
-                        userIncomeDao.insertUserIncome(new UserIncome(twoUser.getUserId(), Constants.PING_HENG_JIANG,mpney));
-                        userDao.addBalance(mpney,twoUser.getUserId());
+        try {
+            if(newUser.getJoinMoney()>0){
+                //上一层
+                SaleUser oneUser = userDao.selectUserById(newUser.getTreeSupId());
+                if(newUser.getUserId().equals(oneUser.getTreeRight())){
+                    int oneMoney = (int)(newUser.getJoinMoney()*Constants.MANAGE_MONEY);
+                    userIncomeDao.insertUserIncome(new UserIncome(newUser.getTreeSupId(), Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,oneMoney));
+                    userDao.addBalance(oneMoney,newUser.getTreeSupId());
+                    //上2层
+                    Integer twoUserId = userDao.selectUserById(newUser.getTreeSupId()).getTreeSupId();
+                    if(twoUserId!=null){
+                        SaleUser twoUser = userDao.selectUserById(twoUserId);
+                        SaleUser lUser = userDao.selectUserById(twoUser.getTreeLeft());
+                        SaleUser rUser = userDao.selectUserById(twoUser.getTreeRight());
+                        if(lUser.getTreeLeft()!=null&&rUser.getTreeLeft()!=null){
+                            int mpney = (int)(newUser.getJoinMoney()/2*Constants.MANAGE_MONEY);
+                            userIncomeDao.insertUserIncome(new UserIncome(twoUser.getUserId(),Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,mpney));
+                            userDao.addBalance(mpney,twoUser.getUserId());
+                            //上3层
+//                        SaleUser u1 = userDao.selectUserById(lUser.getTreeRight());
+//                        SaleUser u2 = userDao.selectUserById(lUser.getTreeLeft());
+//                        SaleUser u3 = userDao.selectUserById(rUser.getTreeRight());
+//                        SaleUser u4 = userDao.selectUserById(rUser.getTreeLeft());
+//                        if(u1.getJoinMoney()>0&&u2.getJoinMoney()>0&&u3.getJoinMoney()>0&&u4.getJoinMoney()>0){
+//                            int mpney = (int)(newUser.getJoinMoney()/2*Constants.MANAGE_MONEY);
+//                            userIncomeDao.insertUserIncome(new UserIncome(twoUser.getUserId(),Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,mpney));
+//                            userDao.addBalance(mpney,twoUser.getUserId());
+//
+//                        }
+                        }
                     }
-                    //上3层
-
-                }
-
-            }
-        }
-    }
-
-    //管理奖
-    private void guanLiJiang(SaleUser newUser){
-        if(newUser.getJoinMoney()>0){
-            Integer upUserId=newUser.getTreeSupId();
-            int money =(int)(newUser.getJoinMoney()*0.05*Constants.MANAGE_MONEY);
-            for(int i=0;i<5;i++){
-                userIncomeDao.insertUserIncome(new UserIncome(upUserId, Constants.GUAN_LI_JIANG,money));
-                userDao.addBalance(money,upUserId);
-                upUserId=userDao.selectUserById(upUserId).getTreeSupId();
-                if(upUserId==null){
-                    break;
                 }
             }
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
         }
     }
 
     //部门奖
     private void buMenJiang(SaleUser newUser){
-        SaleUser upUser;
-        Integer upUserId=newUser.getTreeSupId();
-        int money =(int)(Constants.BU_MEN_MONEY*Constants.MANAGE_MONEY);
-        for(int i=0;i<20;i++){
-            upUser = userDao.selectUserById(upUserId);
-            //位于左区有效
-            if(upUser.getTreeLeft().equals(upUserId)){
-                userIncomeDao.insertUserIncome(new UserIncome(upUserId, Constants.BU_MEN_JIANG,money));
-                userDao.addBalance(money,upUserId);
-            }
-            upUserId=upUser.getTreeSupId();
-            if(upUserId==null){
-                break;
-            }
-        }
-    }
-
-    //组织奖
-    private void reZuzhiJiang(SaleUser newUser){
-
-        Integer supUserId = newUser.getTreeSupId();
-        Integer nowMoney = newUser.getJoinMoney();
-        if(nowMoney>0){
-            int i=0;
-            int money;
-            while (supUserId!=null){
-                SaleUser u = userDao.selectUserById(supUserId);
-                supUserId=u.getTreeSupId();
-
-                if(i<2){
-                    money= (int)(nowMoney*0.06*Constants.MANAGE_MONEY);
-                }else if(i<3){
-                    money= (int)(nowMoney*0.08*Constants.MANAGE_MONEY);
-                }else {
-                    money= (int)(nowMoney*0.1*Constants.MANAGE_MONEY);
+        try {
+            SaleUser upUser;
+            Integer upUserId=newUser.getTreeSupId();
+            int money =(int)(Constants.BU_MEN_MONEY*Constants.MANAGE_MONEY);
+            for(int i=0;i<20;i++){
+                upUser = userDao.selectUserById(upUserId);
+                //位于左区有效
+                if(upUser.getTreeLeft().equals(upUserId)){
+                    userIncomeDao.insertUserIncome(new UserIncome(upUserId,Constants.BU_MEN_JIANG_CODE, Constants.BU_MEN_JIANG,money));
+                    userDao.addBalance(money,upUserId);
                 }
-
-                userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(), Constants.ZU_ZHI_JIANG,money));
-                userDao.addBalance(money,u.getUserId());
-                i++;
+                upUserId=upUser.getTreeSupId();
+                if(upUserId==null){
+                    break;
+                }
             }
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
         }
     }
+
+    //组织奖+管理奖
+    private void reZuzhiJiang(SaleUser newUser){
+        try {
+            Integer nowMoney = newUser.getJoinMoney();
+            Integer upUserId = newUser.getTreeSupId();
+            Integer userId = newUser.getUserId();
+            SaleUser u;
+            if(nowMoney==null||nowMoney.equals(0)){
+                return;
+            }
+
+            while (upUserId!=null){
+                u = userDao.selectUserById(upUserId);
+                upUserId=u.getTreeSupId();
+                if(userId.equals(u.getTreeLeft())){
+                    int money;
+                    if(u.getLeftTotal()<3){
+                        money= (int)(nowMoney*0.06*Constants.MANAGE_MONEY);
+                    }else if(u.getLeftTotal()<4){
+                        money= (int)(nowMoney*0.08*Constants.MANAGE_MONEY);
+                    }else {
+                        money= (int)(nowMoney*0.1*Constants.MANAGE_MONEY);
+                    }
+                    userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(),Constants.ZU_ZHI_JIANG_CODE, Constants.ZU_ZHI_JIANG,money));
+                    userDao.addBalance(money,u.getUserId());
+                    //增加管理奖
+                    Integer upRefereeId=u.getRefereeId();
+                    SaleUser upUser = userDao.selectUserById(upRefereeId);
+                    int moneyG =(int)(money*0.05*Constants.MANAGE_MONEY);
+                    for(int i=0;i<5;i++){
+                        userIncomeDao.insertUserIncome(new UserIncome(upUser.getUserId(), Constants.GUAN_LI_JIANG_CODE, Constants.GUAN_LI_JIANG,moneyG));
+                        userDao.addBalance(moneyG,upUser.getUserId());
+                        upRefereeId=upUser.getRefereeId();
+                        if(upRefereeId==null){
+                            break;
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
+        }
+    }
+
     //刷新幸运分红
     private void reXingYunFenHong(SaleUser newUser){
-        //计算当前自己的幸运分红（立即产生上20位分红）
-        List<SaleUser> allUpUser = new ArrayList();
-        int upRealMoney = 0;
-        Integer reSupId = newUser.getTreeSupId();
-        for(int i=0;i<20;i++){
-            if(reSupId==null){
-                break;
-            }else {
-                SaleUser u = userDao.selectUserById(reSupId);
-                allUpUser.add(u);
-                upRealMoney=upRealMoney+u.getJoinMoney();
-                reSupId = u.getTreeSupId();
-            }
-        }
-        if(upRealMoney>0){
-            int money = (int)(upRealMoney*0.001*Constants.MANAGE_MONEY);
-            log.info("上级幸运分红实际金额----》"+upRealMoney);
-            userIncomeDao.insertUserIncome(new UserIncome(newUser.getUserId(), Constants.XING_YUN_FEN_HONG,money));
-            userDao.addBalance(money,newUser.getUserId());
-        }
-        //新人幸运分红计算E
+        try {
+            //计算当前自己的幸运分红（立即产生上20位分红）
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String sTime = sdf.format(newUser.getcTime());
+            log.info("幸运分红当前时间---》"+sTime);
+            List<SaleUser> users = userDao.selectUsersByCTime(sTime);
+            //先获取自身前20位的分红
+            int moneyPre = 0;
+            if(users.size()<20){
+                for(SaleUser u :users){
+                    System.out.println("****>"+u);
+                    Integer uMoney = userIncomeDao.selectMyAllZuZhiJiang(u.getUserId());
+                    if(uMoney==null||uMoney.equals(0)){
 
-        if(!allUpUser.isEmpty()&&newUser.getJoinMoney()>0){
-            for(SaleUser u:allUpUser){
-                if(u.getLuckEnd()<30){
-                    int money = (int)(newUser.getJoinMoney()*0.001*Constants.MANAGE_MONEY);
-                    userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(), Constants.XING_YUN_FEN_HONG,money));
-                    userDao.addOneSunLuck(money,u.getUserId());
+                    }else {
+                        moneyPre=moneyPre+uMoney;
+                    }
+
+                }
+            }else {
+                int i =0;
+                for(SaleUser u :users){
+                    if(i>20){
+                        break;
+                    }
+                    Integer uMoney = userIncomeDao.selectMyAllZuZhiJiang(u.getUserId());
+                    if(uMoney==null||uMoney.equals(0)){
+
+                    }else {
+                        moneyPre=moneyPre+uMoney;
+                    }
+                    i++;
                 }
             }
+            if(moneyPre>0){
+                int money = (int)(moneyPre*0.01*Constants.MANAGE_MONEY);
+                userIncomeDao.insertUserIncome(new UserIncome(newUser.getUserId(), Constants.XING_YUN_FEN_HONG_CODE, Constants.XING_YUN_FEN_HONG,money));
+                userDao.addBalance(money,newUser.getUserId());
+            }
+        }catch (Exception e){
+            log.error(e.getMessage(),e);
         }
-        //上面的父级没有满30的都分红
     }
 
 

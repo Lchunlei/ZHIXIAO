@@ -20,6 +20,7 @@ public interface UserIncomeDao {
     @Select("SELECT * FROM user_income WHERE userId=#{userId} AND cTime>#{sTime} ORDER BY incomeId LIMIT 20")
     List<UserIncome> selectMyIncomes(@Param("userId") Integer userId, @Param("sTime")String sTime);
 
-
+    @Select("SELECT SUM(money) FROM user_income WHERE userId=#{userId} AND incomeType=4")
+    Integer selectMyAllZuZhiJiang(@Param("userId") Integer userId);
 
 }

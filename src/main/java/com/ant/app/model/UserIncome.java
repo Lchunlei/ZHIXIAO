@@ -11,6 +11,7 @@ import java.util.Date;
 public class UserIncome implements Serializable{
     private Integer incomeId;
     private Integer userId;
+    private Integer incomeType;
     private String ins;
     private Integer money;
     private Date cTime;
@@ -20,9 +21,10 @@ public class UserIncome implements Serializable{
     public UserIncome() {
     }
 
-    public UserIncome(Integer userId, String ins, Integer money) {
+    public UserIncome(Integer userId, Integer incomeType,String ins, Integer money) {
         this.userId = userId;
         this.ins = ins;
+        this.incomeType = incomeType;
         this.money = money;
     }
 
@@ -35,6 +37,14 @@ public class UserIncome implements Serializable{
                 ", money=" + money +
                 ", cTime=" + cTime +
                 '}';
+    }
+
+    public Integer getIncomeType() {
+        return incomeType;
+    }
+
+    public void setIncomeType(Integer incomeType) {
+        this.incomeType = incomeType;
     }
 
     public String getMoneyYuan() {

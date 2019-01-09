@@ -34,6 +34,12 @@ public interface UserDao {
     @Select("SELECT * FROM sale_user WHERE treeSupId=${treeSupId} ORDER BY userId")
     List<SaleUser> selectUsersByTreeSupId(@Param("treeSupId") Integer treeSupId);
 
+    @Select("SELECT * FROM sale_user WHERE cTime<#{sTime} ORDER BY userId DESC LIMIT 30")
+    List<SaleUser> selectUsersByCTime(@Param("sTime")String sTime);
+
+    @Select("SELECT * FROM sale_user WHERE refereeId=#{refereeId}")
+    List<SaleUser> selectUsersByRefereeId(@Param("refereeId")String refereeId);
+
     @SelectProvider(type=LayuiAutoPageSql.class, method="reqList")
     List<SaleUser> selectByPage(LayUiAuToReq layUiAuToReq);
     @SelectProvider(type=LayuiAutoPageSql.class, method="reqListTotal")
@@ -69,5 +75,10 @@ public interface UserDao {
     @Update("UPDATE sale_user SET balance=balance-${money} WHERE userId=${userId}")
     Integer minusBalance(@Param("money")Integer money,@Param("userId") Integer userId);
 
+    @Update("UPDATE sale_user SET leftTotal=1+leftTotal WHERE userId=${userId}")
+    Integer addLeftTotal(@Param("userId") Integer userId);
+
+    @Update("UPDATE sale_user SET rightTotal=1+rightTotal WHERE userId=${userId}")
+    Integer addRightTotal(@Param("userId") Integer userId);
 
 }

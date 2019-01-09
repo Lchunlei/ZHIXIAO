@@ -31,11 +31,22 @@ public class Constants {
     public static final String APPLY_DRAW_ING = "审核中";
 
     public static final String XIAO_YI_FEN_HONG = "效益分红";
+    public static final Integer XIAO_YI_FEN_HONG_CODE = 1;
+
     public static final String XING_YUN_FEN_HONG = "幸运分红";
+    public static final Integer XING_YUN_FEN_HONG_CODE = 2;
+
     public static final String PING_HENG_JIANG = "平衡奖";
+    public static final Integer PING_HENG_JIANG_CODE = 3;
+
     public static final String ZU_ZHI_JIANG = "组织奖";
+    public static final Integer ZU_ZHI_JIANG_CODE = 4;
+
     public static final String GUAN_LI_JIANG = "管理奖";
+    public static final Integer GUAN_LI_JIANG_CODE = 5;
+
     public static final String BU_MEN_JIANG = "部门奖";
+    public static final Integer BU_MEN_JIANG_CODE = 6;
 
 
 }

@@ -22,6 +22,8 @@ public class SaleUser implements Serializable{
     private Integer treeSupId;
     private Integer treeLeft;
     private Integer treeRight;
+    private Integer leftTotal;
+    private Integer rightTotal;
     private Integer refereeId;//推荐人ID
     private Integer puserId;//所属报单中心ID
     private Integer luckEnd;//幸运分红向下最大30
@@ -52,6 +54,22 @@ public class SaleUser implements Serializable{
                 ", uTime=" + uTime +
                 ", cTime=" + cTime +
                 '}';
+    }
+
+    public Integer getLeftTotal() {
+        return leftTotal;
+    }
+
+    public void setLeftTotal(Integer leftTotal) {
+        this.leftTotal = leftTotal;
+    }
+
+    public Integer getRightTotal() {
+        return rightTotal;
+    }
+
+    public void setRightTotal(Integer rightTotal) {
+        this.rightTotal = rightTotal;
     }
 
     public Integer getDepartEnd() {

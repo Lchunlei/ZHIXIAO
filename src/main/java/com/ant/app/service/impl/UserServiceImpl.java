@@ -223,7 +223,10 @@ public class UserServiceImpl implements UserService {
         }
         //异步刷新收益
         if(addSuccess){
-            this.threadTo(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId());
+            //刷新本条线上左右区总人数
+            SaleUser newUser = userDao.selectUserByPhoneNum(user.getPhoneNum());
+            reLRTotal(newUser);
+            this.threadTo(newUser.getUserId());
         }
     }
 
@@ -251,6 +254,21 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    private void reLRTotal(SaleUser saleUser){
+        Integer upUserId = saleUser.getTreeSupId();
+        Integer userId = saleUser.getUserId();
+        SaleUser user;
+        while (upUserId!=null){
+            user = userDao.selectUserById(upUserId);
+            upUserId=user.getTreeSupId();
+            if(userId.equals(user.getTreeLeft())){
+                userDao.addLeftTotal(user.getUserId());
+            }else if(userId.equals(user.getTreeRight())){
+                userDao.addRightTotal(user.getUserId());
+            }
+        }
+    }
+
     //查某个人的下线层数
     private Integer findFloorTotal(Integer userId){
         int i=1;
@@ -261,6 +279,7 @@ public class UserServiceImpl implements UserService {
         }
         return i;
     }
+
     public void threadTo(Integer userId){
         new Thread() {
             public void run() {
