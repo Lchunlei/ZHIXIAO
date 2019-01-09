@@ -130,6 +130,7 @@
 					<!--统计信息展示-->
 					<fieldset class="layui-elem-field" style="padding: 5px;">
 						<!--WeAdmin公告-->
+						<!--
 						<div class="layui-card">
 							<div class="layui-card-header layui-elem-quote">系统公告</div>
 							<div class="layui-card-body">
@@ -152,15 +153,17 @@
 											<li></li>
 										</ul>
 									</div>
-									<!--<button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
-									<button class="layui-icon layui-carousel-arrow" lay-type="add"></button>-->
+									<button class="layui-icon layui-carousel-arrow" lay-type="sub"></button>
+									<button class="layui-icon layui-carousel-arrow" lay-type="add"></button>
 								</div>
 
 							</div>
 						</div>
+							-->
 						<!--<legend>信息统计</legend>-->
-
+						<!--
 						<blockquote class="layui-elem-quote font16">系统数据</blockquote>
+						-->
 						<div class="">
 							<!--
 							<table class="layui-table" lay-even>
@@ -221,38 +224,11 @@
 							<table class="layui-table">
 								<thead>
 									<tr>
-										<th colspan="2" scope="col">服务器信息</th>
+										<th colspan="2" scope="col">福利及分红排名(前15名)</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr>
-										<th width="30%">服务器计算机名</th>
-										<td><span id="lbServerName">http://127.0.0.1/</span></td>
-									</tr>
-									<tr>
-										<td>服务器IP地址</td>
-										<td>192.168.1.1</td>
-									</tr>
-									<tr>
-										<td>服务器域名</td>
-										<td>github.com</td>
-									</tr>
-									<tr>
-										<td>服务器端口 </td>
-										<td>80</td>
-									</tr>
-									<tr>
-										<td>本文件所在文件夹 </td>
-										<td>\Web\Admin\</td>
-									</tr>
-									<tr>
-										<td>Admin时间 </td>
-										<td id="firstTime">2018-12-12 13:14:00</td>
-									</tr>
-									<tr>
-										<td>上次更新时间 </td>
-										<td id="lastTime">7210分钟</td>
-									</tr>
+								<tbody id="webRank">
+
 								</tbody>
 							</table>
 						</div>
@@ -410,6 +386,31 @@
                         $("#t2").text(data_resp.data.totalUser);
                         $("#t3").text(data_resp.data.yesIncomeYuan);
                         $("#t4").text(data_resp.data.yesUser);
+                    }
+                }
+                ,error:function(e){
+                    layer.msg('系统异常!', {
+                        icon: 5,
+                        time: 1000
+                    });
+                }
+            });
+            $.ajax({
+                url:"../../pc/sys/index/rank"
+                ,type:"GET"
+                ,dataType:"json"
+                ,success:function(data_resp){
+                    if('R000'==data_resp.resultCode){
+                        var list = data_resp.data;
+                        var tbody = "";
+                        // 底下施用each进行遍历
+                        $.each(list, function(n, value) {
+                            var trs = "";
+                            trs += "<tr><th width='30%'>" + value.userName + "</th><td>" + value.minTotal*3900 + ".00</td></tr>";
+                            tbody += trs;
+                        });
+                        $("#webRank").empty();
+                        $("#webRank").append(tbody);
                     }
                 }
                 ,error:function(e){

@@ -39,6 +39,7 @@ public class InComeServiceImpl implements InComeService{
             buMenJiang(newUser);
             reZuzhiJiang(newUser);
             reXingYunFenHong(newUser);
+            reSetMin();
         }
     }
 
@@ -145,14 +146,16 @@ public class InComeServiceImpl implements InComeService{
                     userDao.addBalance(money,u.getUserId());
                     //增加管理奖
                     Integer upRefereeId=u.getRefereeId();
-                    SaleUser upUser = userDao.selectUserById(upRefereeId);
-                    int moneyG =(int)(money*0.05*Constants.MANAGE_MONEY);
-                    for(int i=0;i<5;i++){
-                        userIncomeDao.insertUserIncome(new UserIncome(upUser.getUserId(), Constants.GUAN_LI_JIANG_CODE, Constants.GUAN_LI_JIANG,moneyG));
-                        userDao.addBalance(moneyG,upUser.getUserId());
-                        upRefereeId=upUser.getRefereeId();
-                        if(upRefereeId==null){
-                            break;
+                    if(upRefereeId!=null){
+                        SaleUser upUser = userDao.selectUserById(upRefereeId);
+                        int moneyG =(int)(money*0.05*Constants.MANAGE_MONEY);
+                        for(int i=0;i<5;i++){
+                            userIncomeDao.insertUserIncome(new UserIncome(upUser.getUserId(), Constants.GUAN_LI_JIANG_CODE, Constants.GUAN_LI_JIANG,moneyG));
+                            userDao.addBalance(moneyG,upUser.getUserId());
+                            upRefereeId=upUser.getRefereeId();
+                            if(upRefereeId==null){
+                                break;
+                            }
                         }
                     }
                 }
@@ -206,8 +209,28 @@ public class InComeServiceImpl implements InComeService{
         }catch (Exception e){
             log.error(e.getMessage(),e);
         }
+
     }
 
-
+    //刷新所有用户人数最小区人数
+    private void reSetMin(){
+        Integer maxId = userDao.selectUserMaxId();
+        SaleUser u;
+        while (maxId>0){
+            try {
+                u=userDao.selectUserById(maxId);
+                if(u!=null){
+                    if(u.getLeftTotal()>u.getRightTotal()){
+                        userDao.reSetMin(u.getRightTotal(),u.getUserId());
+                    }else {
+                        userDao.reSetMin(u.getLeftTotal(),u.getUserId());
+                    }
+                }
+                maxId--;
+            }catch (Exception e){
+                log.error(e.getMessage(),e);
+            }
+        }
+    }
 
 }

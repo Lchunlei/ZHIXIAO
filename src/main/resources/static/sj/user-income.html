@@ -109,17 +109,20 @@
                     otherDiv.style.display="block";
                     $("#balance").text(data_resp.balance);
                     $("#coin").text(data_resp.coin);
-                    var list = data_resp.data;
-                    var tbody = "";
-
-                    // 底下施用each进行遍历
-                    $.each(list, function(n, value) {
-                        var trs = "";
-                        trs += "<tr><td>" + value.cTime + "</td><td>" + value.ins + "</td><td class='red'>￥" + value.moneyYuan + "</td></tr>";
-                        tbody += trs;
-                    });
                     $("#incomes").empty();
-                    $("#incomes").append(tbody);
+                    var list = data_resp.data;
+                    if(list==null||list.size==0){
+
+                    }else {
+                        var tbody = "";
+                        // 底下施用each进行遍历
+                        $.each(list, function(n, value) {
+                            var trs = "";
+                            trs += "<tr><td>" + value.cTime + "</td><td>" + value.ins + "</td><td class='red'>￥" + value.moneyYuan + "</td></tr>";
+                            tbody += trs;
+                        });
+                        $("#incomes").append(tbody);
+                    }
                 }else if("R400"==data_resp.resultCode){
                     alert(data_resp.resultMsg);
                     window.location.href='login.html';

@@ -5,10 +5,12 @@ import com.ant.app.entity.AppWebResult;
 import com.ant.app.entity.req.AdminLogin;
 import com.ant.app.entity.resp.IndexData;
 import com.ant.app.entity.tree.TreNode;
+import com.ant.app.model.SaleUser;
 import com.ant.app.model.SysAdmin;
 import com.ant.app.service.AdminService;
 import com.ant.app.service.SysService;
 import com.ant.app.service.TreeService;
+import com.ant.app.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @author lchunlei
@@ -33,6 +36,8 @@ public class SysController {
     AdminService adminService;
     @Autowired
     TreeService treeService;
+    @Autowired
+    UserService userService;
 
     /**
      * 初始化首页
@@ -44,6 +49,18 @@ public class SysController {
         log.info("初始化首页--->"+result);
         return result;
     }
+
+    /**
+     * 初始化首页排行榜
+     */
+    @RequestMapping(value = "/index/rank",method = RequestMethod.GET)
+    public AppWebResult initRank(){
+        AppWebResult<List<SaleUser>> result = new AppWebResult();
+        userService.userMinHead(result);
+        log.info("初始化首页排行榜--->"+result);
+        return result;
+    }
+
     /**
      * 查看树
      */

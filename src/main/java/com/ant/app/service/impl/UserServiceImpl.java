@@ -76,6 +76,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void findUserRank(LayUiAuToReq req, LayUiResult<SaleUser> result) {
+        req.setStartNum((req.getPage()-1)*10);
+        Integer totallNumAll = userDao.selectTotalNumRank(req);
+        if(totallNumAll>0){
+            result.setCode(0);
+            result.setMsg("成功");
+            result.setCount(totallNumAll);
+            result.setData(userDao.selectByPageRank(req));
+        }else{
+            result.setCode(Constants.PAGE_ERROR_CODE);
+            result.setMsg(Constants.NOT_MORE_INFO);
+        }
+    }
+
+    @Override
     @Transactional
     public void updaUserUse(Integer userId, Integer nowAdminId, AppWebResult result) {
         SaleUser saleUser = userDao.selectUserById(userId);
@@ -126,6 +141,7 @@ public class UserServiceImpl implements UserService {
         user.setThirdPwd(Constants.PWD_LAST);
         if(user.getJoinMoney()==null){
             user.setJoinMoney(Constants.JOIN_MONEY);
+            user.setCoin(Constants.JOIN_MONEY/100);
         }else {
             int coin = user.getJoinMoney();
             user.setCoin(coin);
@@ -254,6 +270,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void userMinHead(AppWebResult<List<SaleUser>> result) {
+        List<SaleUser> users = userDao.selectUserMinHead();
+        if(users==null||users.isEmpty()){
+            result.setFail(Constants.NULL_DATA);
+        }else {
+            result.setData(users);
+        }
+    }
+
     private void reLRTotal(SaleUser saleUser){
         Integer upUserId = saleUser.getTreeSupId();
         Integer userId = saleUser.getUserId();
@@ -266,6 +292,7 @@ public class UserServiceImpl implements UserService {
             }else if(userId.equals(user.getTreeRight())){
                 userDao.addRightTotal(user.getUserId());
             }
+            userId=user.getUserId();
         }
     }
 

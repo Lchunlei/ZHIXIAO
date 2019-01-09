@@ -6,6 +6,8 @@ import com.ant.app.entity.req.LayUiAuToReq;
 import com.ant.app.entity.req.UserLogin;
 import com.ant.app.model.SaleUser;
 
+import java.util.List;
+
 
 /**
  * @author lchunlei
@@ -17,6 +19,8 @@ public interface UserService {
 
     public void findUsers(LayUiAuToReq req, LayUiResult<SaleUser> result);
 
+    public void findUserRank(LayUiAuToReq req, LayUiResult<SaleUser> result);
+
     public void updaUserUse(Integer userId, Integer nowAdminId, AppWebResult result);
 
     public void addUserCore(SaleUser user, Integer nowAdminId, AppWebResult result);
@@ -26,6 +30,8 @@ public interface UserService {
     public void changePwd(SaleUser user, Integer nowUserId, AppWebResult result);
 
     public void userInfo(Integer userId, AppWebResult<SaleUser> result);
+
+    public void userMinHead(AppWebResult<List<SaleUser>> result);
 
 
 }

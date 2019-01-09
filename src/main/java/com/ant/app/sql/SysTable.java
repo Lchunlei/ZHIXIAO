@@ -13,6 +13,7 @@ public class SysTable {
     public static final String SALE_USER = "sale_user";
     public static final String USER_ID = "userId";
     public static final String USER_NAME = "userName";
+    public static final String MIN_TOTAL = "minTotal";
 
     public static final String USER_DRAW = "user_draw";
     public static final String DRAW_ID = "drawId";

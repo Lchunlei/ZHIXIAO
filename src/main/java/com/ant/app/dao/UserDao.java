@@ -40,10 +40,21 @@ public interface UserDao {
     @Select("SELECT * FROM sale_user WHERE refereeId=#{refereeId}")
     List<SaleUser> selectUsersByRefereeId(@Param("refereeId")String refereeId);
 
+    @Select("SELECT * FROM sale_user ORDER BY minTotal DESC LIMIT 15")
+    List<SaleUser> selectUserMinHead();
+
+    @Select("SELECT MAX(userId) FROM sale_user")
+    Integer selectUserMaxId();
+
     @SelectProvider(type=LayuiAutoPageSql.class, method="reqList")
     List<SaleUser> selectByPage(LayUiAuToReq layUiAuToReq);
     @SelectProvider(type=LayuiAutoPageSql.class, method="reqListTotal")
     Integer selectTotalNum(LayUiAuToReq layUiAuToReq);
+
+    @SelectProvider(type=LayuiAutoPageSql.class, method="reqList")
+    List<SaleUser> selectByPageRank(LayUiAuToReq layUiAuToReq);
+    @SelectProvider(type=LayuiAutoPageSql.class, method="reqListTotal")
+    Integer selectTotalNumRank(LayUiAuToReq layUiAuToReq);
 
     /**
      * 数据修改
@@ -80,5 +91,8 @@ public interface UserDao {
 
     @Update("UPDATE sale_user SET rightTotal=1+rightTotal WHERE userId=${userId}")
     Integer addRightTotal(@Param("userId") Integer userId);
+
+    @Update("UPDATE sale_user SET minTotal=${minTotal} WHERE userId=${userId}")
+    Integer reSetMin(@Param("minTotal") Integer minTotal,@Param("userId") Integer userId);
 
 }
