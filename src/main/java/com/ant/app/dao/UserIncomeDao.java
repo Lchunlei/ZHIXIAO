@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface UserIncomeDao {
 
-    @Insert("INSERT INTO user_income( `userId`,`ins`,`money`,`cTime`) VALUES (#{userId},#{ins},#{money},NOW())")
+    @Insert("INSERT INTO user_income( `userId`,`incomeType`,`ins`,`money`,`cTime`) VALUES (#{userId},${incomeType},#{ins},#{money},NOW())")
     Integer insertUserIncome(UserIncome userIncome);
 
     @Select("SELECT * FROM user_income WHERE userId=#{userId} AND cTime>#{sTime} ORDER BY incomeId LIMIT 20")

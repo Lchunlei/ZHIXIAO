@@ -49,11 +49,7 @@ public class InComeServiceImpl implements InComeService{
         String dateString = formatter.format(new Date().getTime()-30*24*60*60*1000l);
         log.info("一月查询时间---》"+dateString+"**>"+userId);
         List<UserIncome> incomes = userIncomeDao.selectMyIncomes(userId,dateString);
-        if(incomes.isEmpty()){
-            result.setFail(Constants.NOT_MORE_INFO);
-        }else {
-            result.setData(incomes);
-        }
+        result.setData(incomes);
     }
 
     //平衡奖(先计算6层)
@@ -101,14 +97,16 @@ public class InComeServiceImpl implements InComeService{
         try {
             SaleUser upUser;
             Integer upUserId=newUser.getTreeSupId();
+            Integer newUserId = newUser.getUserId();
             int money =(int)(Constants.BU_MEN_MONEY*Constants.MANAGE_MONEY);
             for(int i=0;i<20;i++){
                 upUser = userDao.selectUserById(upUserId);
                 //位于左区有效
-                if(upUser.getTreeLeft().equals(upUserId)){
+                if(upUser.getTreeLeft().equals(newUserId)){
                     userIncomeDao.insertUserIncome(new UserIncome(upUserId,Constants.BU_MEN_JIANG_CODE, Constants.BU_MEN_JIANG,money));
                     userDao.addBalance(money,upUserId);
                 }
+                newUserId=upUserId;
                 upUserId=upUser.getTreeSupId();
                 if(upUserId==null){
                     break;
