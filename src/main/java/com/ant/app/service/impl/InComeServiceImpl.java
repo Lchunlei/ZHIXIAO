@@ -11,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
@@ -31,9 +34,8 @@ public class InComeServiceImpl implements InComeService{
     UserDao userDao;
 
     @Override
-    @Transactional
-    public void refreshIncome(Integer newUserId) {
-        SaleUser newUser = userDao.selectUserById(newUserId);
+    @Transactional(isolation= Isolation.READ_UNCOMMITTED,propagation=Propagation.REQUIRED,readOnly=false)
+    public void refreshIncome(SaleUser newUser) {
         if(newUser!=null){
             pingHengJiang(newUser);
             buMenJiang(newUser);
@@ -62,6 +64,7 @@ public class InComeServiceImpl implements InComeService{
                     int oneMoney = (int)(newUser.getJoinMoney()*Constants.MANAGE_MONEY);
                     userIncomeDao.insertUserIncome(new UserIncome(newUser.getTreeSupId(), Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,oneMoney));
                     userDao.addBalance(oneMoney,newUser.getTreeSupId());
+                }else {
                     //上2层
                     Integer twoUserId = userDao.selectUserById(newUser.getTreeSupId()).getTreeSupId();
                     if(twoUserId!=null){

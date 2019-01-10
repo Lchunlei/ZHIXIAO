@@ -242,7 +242,7 @@ public class UserServiceImpl implements UserService {
             //刷新本条线上左右区总人数
             SaleUser newUser = userDao.selectUserByPhoneNum(user.getPhoneNum());
             reLRTotal(newUser);
-            this.threadTo(newUser.getUserId());
+            this.threadTo(newUser);
         }
     }
 
@@ -307,12 +307,13 @@ public class UserServiceImpl implements UserService {
         return i;
     }
 
-    public void threadTo(Integer userId){
+    private void threadTo(SaleUser user){
         new Thread() {
             public void run() {
                 try {
                     log.info("-------异步计算收益S--------");
-                    inComeService.refreshIncome(userId);
+                    sleep(1000);
+                    inComeService.refreshIncome(user);
                     log.info("-------异步计算收益E--------");
                 } catch (Exception e) {
                     e.printStackTrace();
