@@ -30,6 +30,7 @@ public class SaleUser implements Serializable{
     private Integer luckEnd;//幸运分红向下最大30
     private Integer departEnd;//部门奖向下最大20
     private Integer joinMoney;//加盟费
+    private Integer reBack;//0未回本1已回本
     private Integer totalIncome;
     private Integer balance;
     private Integer coin;
@@ -55,6 +56,14 @@ public class SaleUser implements Serializable{
                 ", uTime=" + uTime +
                 ", cTime=" + cTime +
                 '}';
+    }
+
+    public Integer getReBack() {
+        return reBack;
+    }
+
+    public void setReBack(Integer reBack) {
+        this.reBack = reBack;
     }
 
     public Integer getMinTotal() {

@@ -16,4 +16,11 @@ public interface InComeService {
 
     public void getMyIncomes(Integer userId,AppWebResult<List<UserIncome>> result);
 
+    //判断是否回本
+    public void reBackMoney();
+
+    //刷新效益分红
+    public void reXiaoYiFenHong();
+
+
 }

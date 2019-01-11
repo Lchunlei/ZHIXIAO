@@ -23,4 +23,8 @@ public interface UserIncomeDao {
     @Select("SELECT SUM(money) FROM user_income WHERE userId=#{userId} AND incomeType=4")
     Integer selectMyAllZuZhiJiang(@Param("userId") Integer userId);
 
+    @Select("SELECT SUM(money) FROM user_income WHERE userId=#{userId}")
+    Integer selectMyAllIncome(@Param("userId") Integer userId);
+
+
 }

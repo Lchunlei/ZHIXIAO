@@ -38,8 +38,6 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
             }, {
                 field: 'userStatus',width: 80,title: '状态',templet: '#userStatusTep'
             }, {
-				field: 'puserId',width: 100,title: '推广人ID',templet: '#puserIdTep'
-            }, {
                 field: 'registeCoreMoney',title: '报单权费',templet: '#registeCoreMoneyTep'
             }, {
                 field: 'cTime',title: '创建时间'

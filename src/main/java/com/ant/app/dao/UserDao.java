@@ -19,6 +19,9 @@ public interface UserDao {
     @Insert("INSERT INTO sale_user(`userName`,`phoneNum`,`treeSupId`,`puserId`, `refereeId`,`firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`joinMoney`,`coin`,`cTime`) VALUES (#{userName},#{phoneNum},#{treeSupId},#{puserId},#{refereeId},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},#{joinMoney},#{coin},NOW())")
     Integer insertUser(SaleUser saleUser);
 
+    @Insert("INSERT INTO sale_user(`userName`,`phoneNum`, `firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`cTime`) VALUES (#{userName},#{phoneNum},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},NOW())")
+    Integer insertCore(SaleUser saleUser);
+
     @Select("SELECT * FROM sale_user WHERE phoneNum=#{phoneNum}")
     SaleUser selectUserByPhoneNum(@Param("phoneNum") String phoneNum);
 
@@ -42,6 +45,12 @@ public interface UserDao {
 
     @Select("SELECT * FROM sale_user ORDER BY minTotal DESC LIMIT 15")
     List<SaleUser> selectUserMinHead();
+
+    @Select("SELECT userId,balance,joinMoney FROM sale_user WHERE reBack=0")
+    List<SaleUser> selectAllNoReBack();
+
+    @Select("SELECT SUM(joinMoney) FROM sale_user WHERE cTime>#{sTime} AND cTime<#{eTime}")
+    Integer selectMonthIncome(@Param("sTime")String sTime,@Param("eTime")String eTime);
 
     @Select("SELECT MAX(userId) FROM sale_user")
     Integer selectUserMaxId();
@@ -70,6 +79,12 @@ public interface UserDao {
 
     @Update("UPDATE sale_user SET treeRight=${treeRight} WHERE userId=${userId}")
     Integer upUserRight(@Param("treeRight")Integer treeRight,@Param("userId") Integer userId);
+
+    @Update("UPDATE sale_user SET reBack=1 WHERE userId=${userId}")
+    Integer haveReBack(@Param("userId") Integer userId);
+
+    @Update("UPDATE sale_user SET treeSupId=${treeSupId},puserId=${puserId},refereeId=${refereeId},joinMoney=${joinMoney},coin=${coin},uTime=NOW() WHERE userId=${userId}")
+    Integer upNewUser(SaleUser saleUser);
 
     @Update("UPDATE sale_user SET firstPwd=#{firstPwd},secondPwd=#{secondPwd},thirdPwd=#{thirdPwd},uTime=NOW() WHERE userId=${userId}")
     Integer updateUserPwd(SaleUser saleUser);

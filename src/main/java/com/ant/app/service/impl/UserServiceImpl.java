@@ -116,13 +116,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void addUserCore(SaleUser user, Integer nowAdminId, AppWebResult result) {
         SaleUser oldUser = userDao.selectUserByPhoneNum(user.getPhoneNum());
+        user.setRegisteCore(1);
+        user.setFirstPwd(Constants.PWD);
+        user.setSecondPwd(Constants.PWD);
+        user.setThirdPwd(Constants.PWD_LAST);
         int t ;
         if(oldUser==null){
-            user.setRegisteCore(1);
-            t=userDao.insertUser(user);
+            t=userDao.insertCore(user);
         }else {
             t=userDao.upUserToCore(user.getRegisteCoreMoney());
         }
+        SysLog sysLog = new SysLog(nowAdminId,"addUserCore_"+user.getPhoneNum());
+        sysLogDao.insertSysLog(sysLog);
         if(t==0){
             result.setFail(Constants.ERR_MSG);
         }
@@ -135,10 +140,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addSaleUser(SaleUser user, Integer userId, AppWebResult result) {
+        SaleUser oldUser = userDao.selectUserByPhoneNum(user.getPhoneNum());
+        String refereePhoneNum = user.getRefereePhoneNum();
+        Boolean isNull = true;
+        if(oldUser==null){
+            user.setFirstPwd(Constants.PWD);
+            user.setSecondPwd(Constants.PWD);
+            user.setThirdPwd(Constants.PWD_LAST);
+        }else {
+            isNull=false;
+            user=oldUser;
+        }
         Boolean addSuccess = false;
-        user.setFirstPwd(Constants.PWD);
-        user.setSecondPwd(Constants.PWD);
-        user.setThirdPwd(Constants.PWD_LAST);
+
         if(user.getJoinMoney()==null){
             user.setJoinMoney(Constants.JOIN_MONEY);
             user.setCoin(Constants.JOIN_MONEY/100);
@@ -148,31 +162,35 @@ public class UserServiceImpl implements UserService {
             user.setJoinMoney(coin*100);
         }
         SaleUser loginUser = userDao.selectUserById(userId);
-        SaleUser refereeUser = userDao.selectUserByPhoneNum(user.getRefereePhoneNum());
+        SaleUser refereeUser = userDao.selectUserByPhoneNum(refereePhoneNum);
         if(refereeUser==null){
             result.setFail(Constants.REFORE_USER_NULL);
             return;
         }else {
             user.setRefereeId(refereeUser.getUserId());
         }
-        SaleUser oldUser = userDao.selectUserByPhoneNum(user.getPhoneNum());
         SaleUser preTreeSup=refereeUser;
         user.setPuserId(userId);//赋值报单中心ID
         if(loginUser==null||loginUser.getUserStatus().equals(1)){
             result.setFail(Constants.NULL_DATA);
         }else if(loginUser.getRegisteCore().equals(0)){
             result.setFail(Constants.AUTH_LESS);
-        }else if(oldUser!=null){
-            //注册手机号已经存在
-            result.setFail(Constants.PHONE_HAD);
         }else if(refereeUser.getTreeLeft()==null){
             user.setTreeSupId(refereeUser.getUserId());
-            userDao.insertUser(user);
+            if(isNull){
+                userDao.insertUser(user);
+            }else {
+                userDao.upNewUser(user);
+            }
             userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
             addSuccess=true;
         }else if(refereeUser.getTreeRight()==null){
             user.setTreeSupId(refereeUser.getUserId());
-            userDao.insertUser(user);
+            if(isNull){
+                userDao.insertUser(user);
+            }else {
+                userDao.upNewUser(user);
+            }
             userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
             addSuccess=true;
         }else {
@@ -227,7 +245,11 @@ public class UserServiceImpl implements UserService {
             }
             log.info("预父树---》"+preTreeSup);
             user.setTreeSupId(preTreeSup.getUserId());
-            userDao.insertUser(user);
+            if(isNull){
+                userDao.insertUser(user);
+            }else {
+                userDao.upNewUser(user);
+            }
             addSuccess=true;
             if(preTreeSup.getTreeLeft()==null){
                 userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());

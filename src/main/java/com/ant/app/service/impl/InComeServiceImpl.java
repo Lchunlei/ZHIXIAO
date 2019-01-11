@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,52 @@ public class InComeServiceImpl implements InComeService{
         log.info("一月查询时间---》"+dateString+"**>"+userId);
         List<UserIncome> incomes = userIncomeDao.selectMyIncomes(userId,dateString);
         result.setData(incomes);
+    }
+
+    @Override
+    public void reBackMoney() {
+        List<SaleUser> users = userDao.selectAllNoReBack();
+        if(users!=null){
+            for (SaleUser u:users){
+                Integer totallIncome = userIncomeDao.selectMyAllIncome(u.getUserId());
+                if(totallIncome!=null&&totallIncome>u.getJoinMoney()){
+                    //已经回本
+                    userDao.haveReBack(u.getUserId());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void reXiaoYiFenHong() {
+        List<SaleUser> users = userDao.selectAllNoReBack();
+        if(users!=null){
+            Integer total = users.size();
+            //上个月时间段
+            SimpleDateFormat dft = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.MONTH, -1);
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            String eTime = dft.format(calendar.getTime())+" 23:59:59";
+            String sTime = eTime.substring(0,8)+"01 00:00:00";
+            //本月总收入
+            Integer totalIncome = userDao.selectMonthIncome(sTime,eTime);
+            log.info("一月计算效益分红---》"+sTime+"**>"+eTime+"总人数："+total+"总收入："+totalIncome);
+            if(totalIncome!=null&&totalIncome>0){
+                //开始分红
+                Integer oneMoney = (int)(totalIncome*0.05*(1d/total)*Constants.MANAGE_MONEY);
+                System.out.println("每人收益---》"+oneMoney);
+                for (SaleUser u:users){
+                    try {
+                        userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(), Constants.XIAO_YI_FEN_HONG_CODE, Constants.XIAO_YI_FEN_HONG,oneMoney));
+                        userDao.addBalance(oneMoney,u.getUserId());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     //平衡奖(先计算6层)

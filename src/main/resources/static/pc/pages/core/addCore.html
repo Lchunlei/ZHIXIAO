@@ -21,10 +21,10 @@
         <form class="layui-form">
           <div class="layui-form-item">
               <label for="username" class="layui-form-label">
-                  <span class="we-red">*</span>昵称
+                  <span class="we-red">*</span>姓名
               </label>
               <div class="layui-input-inline">
-                  <input type="text" id="username" name="userNick" required="" lay-verify="required" autocomplete="off" class="layui-input">
+                  <input type="text" id="username" name="userName" required="" lay-verify="required" autocomplete="off" class="layui-input">
               </div>
               <div class="layui-form-mid layui-word-aux">
                   <span class="we-red">*</span>让别人更好的记住你哦
@@ -76,69 +76,9 @@
               </div>
           </div>
           -->
-        <div class="layui-form-item">
-            <label for="username" class="layui-form-label">
-                <span class="we-red">*</span>姓名
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" name="userName" required="" lay-verify="required" autocomplete="off" class="layui-input">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                <span class="we-red">*</span>这是真实姓名哦
-            </div>
-        </div>
-            <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
-                    <span class="we-red">*</span>父级ID
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" name="puserId" required="" lay-verify="required" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="we-red">*</span>请填写具体推荐人ID
-                </div>
-            </div>
-          <div class="layui-form-item">
-              <label for="L_pass" class="layui-form-label">
-                  <span class="we-red">*</span>一级密码
-              </label>
-              <div class="layui-input-inline">
-                  <input type="password" id="L_pass" name="firstPwd" required="" lay-verify="pass"
-                  autocomplete="off" class="layui-input">
-              </div>
-              <div class="layui-form-mid layui-word-aux">
-                  <span class="we-red">*</span>6到16个字符
-              </div>
-          </div>
-
-        <div class="layui-form-item">
-            <label for="L_pass" class="layui-form-label">
-                <span class="we-red">*</span>二级密码
-            </label>
-            <div class="layui-input-inline">
-                <input type="password" name="secondPwd" required="" lay-verify="pass"
-                       autocomplete="off" class="layui-input">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                <span class="we-red">*</span>6到16个字符
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label for="L_pass" class="layui-form-label">
-                <span class="we-red">*</span>三级密码
-            </label>
-            <div class="layui-input-inline">
-                <input type="password" name="thirdPwd" required="" lay-verify="pass"
-                       autocomplete="off" class="layui-input">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                <span class="we-red">*</span>6到16个字符
-            </div>
-        </div>
 
           <div class="layui-form-item">
-              <label for="L_pass" class="layui-form-label">
+              <label for="username" class="layui-form-label">
               </label>
               <button  class="layui-btn" lay-filter="add" lay-submit="">
                   增加
@@ -182,7 +122,7 @@
                   ,dataType:"json"
                   ,success:function(data_resp){
                       if('R000'==data_resp.resultCode){
-                          layer.alert("添加成功！", {
+                          layer.alert("添加成功！初始密码为：123456", {
                               icon: 1
                           }, function() {
                               parent.table.reload('coreUsers', {});

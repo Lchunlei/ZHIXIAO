@@ -9,7 +9,7 @@ public class Constants {
     public final static Integer BU_MEN_MONEY = 1000;//部门奖单人奖励
     public final static double MANAGE_MONEY = 0.95;//部门管理费
     public final static double DRAW_SERVICE_MONEY = 0.05;//提现手续费
-
+    public static final String XIAO_YI_SET_TIME = "01";
 
     public static final String SUCCESS_MSG = "操作成功";
     public static final String ERR_MSG = "操作失败";
