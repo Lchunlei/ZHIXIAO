@@ -44,7 +44,7 @@
 			-->
 			<ul class="layui-nav right" lay-filter="">
 				<li class="layui-nav-item">
-					<a href="javascript:;">管理员</a>
+					<a href="javascript:;" id="role">管理员</a>
 
 					<dl class="layui-nav-child">
 
@@ -112,7 +112,7 @@
 						</ul>
 					</li>
 
-					<li>
+					<li id="huiYuan">
 						<a href="javascript:;">
 							<i class="iconfont">&#xe6b8;</i>
 							<cite>会员管理</cite>
@@ -325,7 +325,8 @@
 
 							}else{
                                 $("#guan").remove();
-
+                                $("#huiYuan").remove();
+                                $("#role").text("财务人员");
 							}
                         }else {
                             layer.msg(data_resp.resultMsg, {

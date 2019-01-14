@@ -108,9 +108,12 @@ public class InComeServiceImpl implements InComeService{
                 //上一层
                 SaleUser oneUser = userDao.selectUserById(newUser.getTreeSupId());
                 if(newUser.getUserId().equals(oneUser.getTreeRight())){
-                    int oneMoney = (int)(newUser.getJoinMoney()*Constants.MANAGE_MONEY);
-                    userIncomeDao.insertUserIncome(new UserIncome(newUser.getTreeSupId(), Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,oneMoney));
-                    userDao.addBalance(oneMoney,newUser.getTreeSupId());
+                    SaleUser lUser = userDao.selectUserById(oneUser.getTreeLeft());
+                    if(lUser.getJoinMoney()>0){
+                        int oneMoney = (int)(newUser.getJoinMoney()*Constants.MANAGE_MONEY);
+                        userIncomeDao.insertUserIncome(new UserIncome(newUser.getTreeSupId(), Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,oneMoney));
+                        userDao.addBalance(oneMoney,newUser.getTreeSupId());
+                    }
                 }else {
                     //上2层
                     Integer twoUserId = userDao.selectUserById(newUser.getTreeSupId()).getTreeSupId();
