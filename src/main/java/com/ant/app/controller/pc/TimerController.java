@@ -32,7 +32,7 @@ public class TimerController {
         //yyyy-MM-dd HH:mm:ss
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
         String nowTime = sdf.format(new Date());
-        if(Constants.XIAO_YI_SET_TIME.equals(nowTime)){
+        if(!Constants.XIAO_YI_SET_TIME.equals(nowTime)){
             log.info("-----今日不是一号---"+nowTime);
         }else {
             //先刷新是否回本
@@ -45,4 +45,5 @@ public class TimerController {
             log.info("-----计算效益分红E---");
         }
     }
+
 }
