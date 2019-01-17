@@ -44,10 +44,9 @@
 			</div>
 		</form>
 	</div>
+
 	<div class="weadmin-block">
-		<!--
-		<button class="layui-btn" onclick="WeAdminShow('添加用户','./addAdmin.html',600,400)"><i class="layui-icon"></i>添加</button>
-		-->
+		<button class="layui-btn" onclick="WeAdminShow('添加用户','./addUser.html',600,480)"><i class="layui-icon"></i>添加</button>
 	</div>
 
 	<table class="layui-table" id="saleUsers"/>
@@ -64,12 +63,23 @@
 		{{#  } }}
 	</script>
 
+	<script type="text/html" id="registeCoreTep">
+		{{#  if(d.registeCore == 0){ }}
+		<span style="color:lightgray">无</span>
+		{{#  } else { }}
+		<span style="color:green">有</span>
+		{{#  } }}
+	</script>
+
 	<script type="text/html" id="operateTpl">
 		{{#  if(d.userStatus == 0){ }}
-		<button class="layui-btn layui-btn-xs layui-btn-danger" onclick="updateUser('{{d.userId}}')" >冻结用户</button>
+		<button class="layui-btn layui-btn-xs layui-btn-danger" onclick="updateUser('{{d.userId}}')" >冻结</button>
 		{{#  } else { }}
-		<button class="layui-btn layui-btn-xs layui-btn-normal" onclick="updateUser('{{d.userId}}')" >解冻用户</button>
+		<button class="layui-btn layui-btn-xs layui-btn-normal" onclick="updateUser('{{d.userId}}')" >解冻</button>
 		{{#  } }}
+
+		<button class="layui-btn layui-btn-xs layui-btn-normal" onclick="WeAdminEdit('升级会员','./upUser.html','{{d.userId}}',600,400)">升级</button>
+
 	</script>
 
 </div>

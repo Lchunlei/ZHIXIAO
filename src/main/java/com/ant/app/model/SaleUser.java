@@ -12,6 +12,7 @@ import java.util.Date;
 public class SaleUser implements Serializable{
 
     private Integer userId;
+    private String userNum;
     private String userName;
     private String phoneNum;
     private String firstPwd;
@@ -39,7 +40,7 @@ public class SaleUser implements Serializable{
     private Date uTime;
     private Date cTime;
 
-    private String refereePhoneNum;
+    private String refereeUserNum;
     private String oldFirstPwd;
     private String joinMoneyYuan;
     @Override
@@ -60,6 +61,14 @@ public class SaleUser implements Serializable{
 
     public Integer getReBack() {
         return reBack;
+    }
+
+    public String getUserNum() {
+        return userNum;
+    }
+
+    public void setUserNum(String userNum) {
+        this.userNum = userNum;
     }
 
     public void setReBack(Integer reBack) {
@@ -146,12 +155,12 @@ public class SaleUser implements Serializable{
         this.oldFirstPwd = oldFirstPwd;
     }
 
-    public String getRefereePhoneNum() {
-        return refereePhoneNum;
+    public String getRefereeUserNum() {
+        return refereeUserNum;
     }
 
-    public void setRefereePhoneNum(String refereePhoneNum) {
-        this.refereePhoneNum = refereePhoneNum;
+    public void setRefereeUserNum(String refereeUserNum) {
+        this.refereeUserNum = refereeUserNum;
     }
 
     public Integer getActivated() {

@@ -115,21 +115,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addUserCore(SaleUser user, Integer nowAdminId, AppWebResult result) {
-        SaleUser oldUser = userDao.selectUserByPhoneNum(user.getPhoneNum());
-        user.setRegisteCore(1);
-        user.setFirstPwd(Constants.PWD);
-        user.setSecondPwd(Constants.PWD);
-        user.setThirdPwd(Constants.PWD_LAST);
-        int t ;
-        if(oldUser==null){
-            t=userDao.insertCore(user);
+        SaleUser oldUser = userDao.selectUserById(user.getUserId());
+        if(oldUser.getRegisteCore().equals(1)){
+            result.setFail("报单中心不能多次申请！");
         }else {
-            t=userDao.upUserToCore(user.getRegisteCoreMoney());
-        }
-        SysLog sysLog = new SysLog(nowAdminId,"addUserCore_"+user.getPhoneNum());
-        sysLogDao.insertSysLog(sysLog);
-        if(t==0){
-            result.setFail(Constants.ERR_MSG);
+            int t = userDao.upUserToCore(user.getRegisteCoreMoney(),user.getUserId());
+            SysLog sysLog = new SysLog(nowAdminId,"addUserCore_"+user.getPhoneNum());
+            sysLogDao.insertSysLog(sysLog);
+            if(t==0){
+                result.setFail(Constants.ERR_MSG);
+            }
         }
     }
 
@@ -139,20 +134,40 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public void addSaleUser(SaleUser user, Integer userId, AppWebResult result) {
-        SaleUser oldUser = userDao.selectUserByPhoneNum(user.getPhoneNum());
-        String refereePhoneNum = user.getRefereePhoneNum();
-        Boolean isNull = true;
-        if(oldUser==null){
+    public void addSaleUser(SaleUser user, Integer newUserId, AppWebResult result) {
+
+        //校验新用户数据
+        SaleUser oldUser1 = userDao.selectUserByPhoneNum(user.getPhoneNum());
+        if(oldUser1==null){
             user.setFirstPwd(Constants.PWD);
             user.setSecondPwd(Constants.PWD);
             user.setThirdPwd(Constants.PWD_LAST);
         }else {
-            isNull=false;
-            user=oldUser;
+            result.setFail("手机号已被注册！");
+            return;
         }
-        Boolean addSuccess = false;
+        SaleUser oldUser2 = userDao.selectUserByUserNum(user.getUserNum());
+        if(oldUser2!=null){
+            result.setFail("用户编号已被注册！");
+            return;
+        }
+        //校验推荐人
+        Integer refereeId = user.getRefereeId();
 
+        SaleUser refereeUser = userDao.selectUserById(refereeId);
+        if(refereeUser==null){
+            result.setFail(Constants.REFORE_USER_NULL);
+            return;
+        }else if(!refereeUser.getUserNum().equals(user.getRefereeUserNum())){
+            result.setFail(Constants.REFORE_USER_NULL);
+            return;
+        }else {
+            user.setRefereeId(refereeUser.getUserId());
+        }
+        //基本信息校验完毕
+
+
+        Boolean addSuccess = false;
         if(user.getJoinMoney()==null){
             user.setJoinMoney(Constants.JOIN_MONEY);
             user.setCoin(Constants.JOIN_MONEY/100);
@@ -161,36 +176,23 @@ public class UserServiceImpl implements UserService {
             user.setCoin(coin);
             user.setJoinMoney(coin*100);
         }
-        SaleUser loginUser = userDao.selectUserById(userId);
-        SaleUser refereeUser = userDao.selectUserByPhoneNum(refereePhoneNum);
-        if(refereeUser==null){
-            result.setFail(Constants.REFORE_USER_NULL);
-            return;
-        }else {
-            user.setRefereeId(refereeUser.getUserId());
-        }
+        SaleUser loginUser = userDao.selectUserById(newUserId);
+
         SaleUser preTreeSup=refereeUser;
-        user.setPuserId(userId);//赋值报单中心ID
+
+        user.setPuserId(newUserId);//赋值报单中心ID
         if(loginUser==null||loginUser.getUserStatus().equals(1)){
             result.setFail(Constants.NULL_DATA);
         }else if(loginUser.getRegisteCore().equals(0)){
             result.setFail(Constants.AUTH_LESS);
         }else if(refereeUser.getTreeLeft()==null){
             user.setTreeSupId(refereeUser.getUserId());
-            if(isNull){
-                userDao.insertUser(user);
-            }else {
-                userDao.upNewUser(user);
-            }
+            userDao.insertUser(user);
             userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
             addSuccess=true;
         }else if(refereeUser.getTreeRight()==null){
             user.setTreeSupId(refereeUser.getUserId());
-            if(isNull){
-                userDao.insertUser(user);
-            }else {
-                userDao.upNewUser(user);
-            }
+            userDao.insertUser(user);
             userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
             addSuccess=true;
         }else {
@@ -245,11 +247,7 @@ public class UserServiceImpl implements UserService {
             }
             log.info("预父树---》"+preTreeSup);
             user.setTreeSupId(preTreeSup.getUserId());
-            if(isNull){
-                userDao.insertUser(user);
-            }else {
-                userDao.upNewUser(user);
-            }
+            userDao.insertUser(user);
             addSuccess=true;
             if(preTreeSup.getTreeLeft()==null){
                 userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());

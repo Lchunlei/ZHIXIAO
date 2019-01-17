@@ -58,7 +58,7 @@ public class UserController {
     }
 
     /**
-     * 用户添加
+     * 用户添加(手机端)
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public AppWebResult addUser(HttpSession session,SaleUser saleUser){
@@ -71,6 +71,25 @@ public class UserController {
             Integer nowUserCore = (int)obj;
             saleUser.setRegisteCore(0);
             userService.addSaleUser(saleUser,nowUserCore,result);
+            log.info("用户添加返回--->"+result);
+        }
+        return result;
+    }
+
+    /**
+     * 用户添加(PC端)
+     */
+    @RequestMapping(value = "/pc/add",method = RequestMethod.POST)
+    public AppWebResult addUserPc(HttpSession session,SaleUser saleUser){
+        AppWebResult result = new AppWebResult();
+        Object obj = session.getAttribute(Constants.ADMIN_ID);
+        if(obj==null){
+            result.setResultCode(Constants.NO_LOGIN_CODE);
+            result.setResultMsg(Constants.NO_LOGIN);
+        }else {
+            //Integer nowUserCore = (int)obj;
+            saleUser.setRegisteCore(0);
+            userService.addSaleUser(saleUser,Constants.SUPER_ADMIN_ID,result);
             log.info("用户添加返回--->"+result);
         }
         return result;

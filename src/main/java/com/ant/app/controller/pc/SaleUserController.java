@@ -36,7 +36,6 @@ public class SaleUserController {
     public LayUiResult userList(LayUiAuToReq layUiAuToReq){
         log.info("会员列表查看--->"+layUiAuToReq);
         layUiAuToReq.tableSet(SysTable.SALE_USER,SysTable.USER_ID,SysTable.C_TIME,SysTable.USER_NAME,SysTable.USER_ID);
-        layUiAuToReq.setAntherWhere(" registeCore=0 ");
         LayUiResult<SaleUser> result = new LayUiResult();
         userService.findUsers(layUiAuToReq,result);
         log.info("会员列表查看返回--->"+result);
@@ -104,7 +103,17 @@ public class SaleUserController {
         return result;
     }
 
-
+    /**
+     * 查看会员详情
+     */
+    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    public AppWebResult getUserInfo(Integer userId){
+        log.info("查看会员详情查看--->"+userId);
+        AppWebResult<SaleUser> result = new AppWebResult();
+        userService.userInfo(userId,result);
+        log.info("查看会员详情返回--->"+result);
+        return result;
+    }
 
 
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface UserDao {
 
-    @Insert("INSERT INTO sale_user(`userName`,`phoneNum`,`treeSupId`,`puserId`, `refereeId`,`firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`joinMoney`,`coin`,`cTime`) VALUES (#{userName},#{phoneNum},#{treeSupId},#{puserId},#{refereeId},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},#{joinMoney},#{coin},NOW())")
+    @Insert("INSERT INTO sale_user(`userName`,`userNum`,`phoneNum`,`treeSupId`,`puserId`, `refereeId`,`firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`joinMoney`,`coin`,`cTime`) VALUES (#{userName},#{userNum},#{phoneNum},#{treeSupId},#{puserId},#{refereeId},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},#{joinMoney},#{coin},NOW())")
     Integer insertUser(SaleUser saleUser);
 
     @Insert("INSERT INTO sale_user(`userName`,`phoneNum`, `firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`cTime`) VALUES (#{userName},#{phoneNum},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},NOW())")
@@ -24,6 +24,9 @@ public interface UserDao {
 
     @Select("SELECT * FROM sale_user WHERE phoneNum=#{phoneNum}")
     SaleUser selectUserByPhoneNum(@Param("phoneNum") String phoneNum);
+
+    @Select("SELECT * FROM sale_user WHERE userNum=#{userNum}")
+    SaleUser selectUserByUserNum(@Param("userNum") String userNum);
 
     @Select("SELECT * FROM sale_user WHERE userId=${userId}")
     SaleUser selectUserById(@Param("userId") Integer userId);
@@ -72,7 +75,7 @@ public interface UserDao {
     Integer updateUserStatus(@Param("userStatus")Integer userStatus,@Param("userId")Integer userId);
 
     @Update("UPDATE sale_user SET registeCore=1,registeCoreMoney=${registeCoreMoney},uTime=NOW() WHERE userId=${userId}")
-    Integer upUserToCore(@Param("registeCoreMoney")Integer registeCoreMoney);
+    Integer upUserToCore(@Param("registeCoreMoney")Integer registeCoreMoney,@Param("userId")Integer userId);
 
     @Update("UPDATE sale_user SET treeLeft=${treeLeft} WHERE userId=${userId}")
     Integer upUserLeft(@Param("treeLeft")Integer treeLeft,@Param("userId") Integer userId);

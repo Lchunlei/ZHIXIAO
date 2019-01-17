@@ -32,13 +32,17 @@ layui.use(['table', 'jquery','form', 'admin'], function() {
 			}, {
 				field: 'userId',width: 60,title: 'ID'
 			}, {
-				field: 'userName',title: '真实姓名'
+                field: 'userNum',title: '编号'
+            }, {
+				field: 'userName',title: '姓名'
 			}, {
 				field: 'phoneNum',title: '手机号'
             }, {
                 field: 'userStatus',width: 80,title: '状态',templet: '#userStatusTep'
             }, {
-				field: 'puserId',width: 100,title: '推广人ID'
+                field: 'registeCore',width: 80,title: '报单权',templet: '#registeCoreTep'
+            }, {
+				field: 'refereeId',width: 100,title: '推荐人ID'
             }, {
                 field: 'joinMoney',title: '加盟费',templet: '#joinMoneyTep'
             }, {
