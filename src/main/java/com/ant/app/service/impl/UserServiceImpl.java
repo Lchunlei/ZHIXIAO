@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void appLogin(UserLogin login, AppWebResult<Integer> result) {
         log.info("用户登陆---》"+login);
-        SaleUser user = userDao.selectUserByPhoneNum(login.getPhoneNum());
+        SaleUser user = userDao.selectUserByUserNum(login.getUserNum());
         if(user==null){
             result.setFail(Constants.USER_NULL);
         }else if(!user.getFirstPwd().equals(login.getFirstPwd())){
@@ -134,40 +134,50 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public void addSaleUser(SaleUser user, Integer newUserId, AppWebResult result) {
+    public void addSaleUser(SaleUser user, Integer nowCoreId, AppWebResult result) {
 
         //校验新用户数据
-        SaleUser oldUser1 = userDao.selectUserByPhoneNum(user.getPhoneNum());
+        SaleUser oldUser1 = userDao.selectUserByUserNum(user.getUserNum());
         if(oldUser1==null){
             user.setFirstPwd(Constants.PWD);
             user.setSecondPwd(Constants.PWD);
             user.setThirdPwd(Constants.PWD_LAST);
         }else {
-            result.setFail("手机号已被注册！");
-            return;
-        }
-        SaleUser oldUser2 = userDao.selectUserByUserNum(user.getUserNum());
-        if(oldUser2!=null){
             result.setFail("用户编号已被注册！");
             return;
         }
-        //校验推荐人
-        Integer refereeId = user.getRefereeId();
-
-        SaleUser refereeUser = userDao.selectUserById(refereeId);
-        if(refereeUser==null){
-            result.setFail(Constants.REFORE_USER_NULL);
-            return;
-        }else if(!refereeUser.getUserNum().equals(user.getRefereeUserNum())){
+        //校验推荐人和接点人
+        String refereeUserNum = user.getRefereeUserNum();
+        String treeSupNum = user.getTreeSupNum();
+        SaleUser refereeUser = userDao.selectUserByUserNum(refereeUserNum);
+        SaleUser treeSupUser = userDao.selectUserByUserNum(treeSupNum);
+        if(refereeUser==null||treeSupUser==null){
             result.setFail(Constants.REFORE_USER_NULL);
             return;
         }else {
+            if(user.getLeftOrRight()==null){
+                if(treeSupUser.getTreeLeft()==null){
+                    user.setLeftOrRight(0);
+                }else if(treeSupUser.getTreeRight()==null){
+                    user.setLeftOrRight(1);
+                }else {
+                    result.setFail(Constants.SWAT_NOT_NULL);
+                    return;
+                }
+            }else {
+                if(user.getLeftOrRight().equals(0)&&treeSupUser.getTreeLeft()==null){
+
+                }else if(user.getLeftOrRight().equals(1)&&treeSupUser.getTreeRight()==null){
+
+                }else {
+                    result.setFail(Constants.SWAT_NOT_NULL);
+                    return;
+                }
+            }
             user.setRefereeId(refereeUser.getUserId());
+            user.setTreeSupId(treeSupUser.getUserId());
         }
         //基本信息校验完毕
-
-
-        Boolean addSuccess = false;
         if(user.getJoinMoney()==null){
             user.setJoinMoney(Constants.JOIN_MONEY);
             user.setCoin(Constants.JOIN_MONEY/100);
@@ -176,94 +186,104 @@ public class UserServiceImpl implements UserService {
             user.setCoin(coin);
             user.setJoinMoney(coin*100);
         }
-        SaleUser loginUser = userDao.selectUserById(newUserId);
 
-        SaleUser preTreeSup=refereeUser;
-
-        user.setPuserId(newUserId);//赋值报单中心ID
-        if(loginUser==null||loginUser.getUserStatus().equals(1)){
-            result.setFail(Constants.NULL_DATA);
-        }else if(loginUser.getRegisteCore().equals(0)){
-            result.setFail(Constants.AUTH_LESS);
-        }else if(refereeUser.getTreeLeft()==null){
-            user.setTreeSupId(refereeUser.getUserId());
-            userDao.insertUser(user);
-            userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
-            addSuccess=true;
-        }else if(refereeUser.getTreeRight()==null){
-            user.setTreeSupId(refereeUser.getUserId());
-            userDao.insertUser(user);
-            userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
-            addSuccess=true;
+        user.setPuserId(nowCoreId);//赋值报单中心ID
+        user.setTreeSupId(treeSupUser.getUserId());
+        userDao.insertUser(user);
+        if(user.getLeftOrRight().equals(0)){
+            userDao.upUserLeft(userDao.selectUserByUserNum(user.getUserNum()).getUserId(),user.getTreeSupId());
         }else {
-            int floorTotal = findFloorTotal(user.getRefereeId());
-            log.info("用户--"+user.getRefereeId()+"--下线层数--》"+floorTotal);
-            List<String> strs = TreeUtil.treeList(floorTotal);
-            Integer minFloor = 10000000;
-            String minStr = null;
-
-            //判断最短的树枝线
-            for(String s:strs){
-                char[] chars = s.toCharArray();
-                SaleUser u =refereeUser;
-                int i = 0;
-                for(char c:chars){
-                    i++;
-                    Integer sunId;
-                    if(c=='0'){
-                        sunId=u.getTreeLeft();
-                    }else {
-                        sunId=u.getTreeRight();
-                    }
-                   if(sunId==null){
-                        if(i<minFloor){
-                            minFloor=i;
-                            minStr=s;
-                            break;
-                        }
-                   }else {
-                       u=userDao.selectUserById(sunId);
-                   }
-
-                }
-            }
-            log.info("树枝总数---》"+strs);
-            log.info("最短层数---》"+minFloor);
-            log.info("最短树枝---》"+minStr);
-            //定位最短的树枝挂
-            char[] minTree = minStr.toCharArray();
-            for(char c:minTree){
-                minFloor--;
-                Integer sunId;
-                if(c=='0'){
-                    sunId=preTreeSup.getTreeLeft();
-                }else {
-                    sunId=preTreeSup.getTreeRight();
-                }
-                preTreeSup=userDao.selectUserById(sunId);
-               if(minFloor==1){
-                   break;
-               }
-            }
-            log.info("预父树---》"+preTreeSup);
-            user.setTreeSupId(preTreeSup.getUserId());
-            userDao.insertUser(user);
-            addSuccess=true;
-            if(preTreeSup.getTreeLeft()==null){
-                userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
-            }else if(preTreeSup.getTreeRight()==null){
-                userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
-            }else {
-                throw new AddUserException();
-            }
+            userDao.upUserRight(userDao.selectUserByUserNum(user.getUserNum()).getUserId(),user.getTreeSupId());
         }
+
+        //刷新本条线上左右区总人数
+        SaleUser newUser = userDao.selectUserByUserNum(user.getUserNum());
+        reLRTotal(newUser);
+        this.threadTo(newUser);
+
+//        if(loginUser==null||loginUser.getUserStatus().equals(1)){
+//            result.setFail(Constants.NULL_DATA);
+//        }else if(loginUser.getRegisteCore().equals(0)){
+//            result.setFail(Constants.AUTH_LESS);
+//        }else if(refereeUser.getTreeLeft()==null){
+//            user.setTreeSupId(refereeUser.getUserId());
+//            userDao.insertUser(user);
+//            userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
+//            addSuccess=true;
+//        }else if(refereeUser.getTreeRight()==null){
+//            user.setTreeSupId(refereeUser.getUserId());
+//            userDao.insertUser(user);
+//            userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),user.getRefereeId());
+//            addSuccess=true;
+//        }else {
+//            int floorTotal = findFloorTotal(user.getRefereeId());
+//            log.info("用户--"+user.getRefereeId()+"--下线层数--》"+floorTotal);
+//            List<String> strs = TreeUtil.treeList(floorTotal);
+//            Integer minFloor = 10000000;
+//            String minStr = null;
+//
+//            //判断最短的树枝线
+//            for(String s:strs){
+//                char[] chars = s.toCharArray();
+//                SaleUser u =refereeUser;
+//                int i = 0;
+//                for(char c:chars){
+//                    i++;
+//                    Integer sunId;
+//                    if(c=='0'){
+//                        sunId=u.getTreeLeft();
+//                    }else {
+//                        sunId=u.getTreeRight();
+//                    }
+//                   if(sunId==null){
+//                        if(i<minFloor){
+//                            minFloor=i;
+//                            minStr=s;
+//                            break;
+//                        }
+//                   }else {
+//                       u=userDao.selectUserById(sunId);
+//                   }
+//
+//                }
+//            }
+//            log.info("树枝总数---》"+strs);
+//            log.info("最短层数---》"+minFloor);
+//            log.info("最短树枝---》"+minStr);
+//            //定位最短的树枝挂
+//            char[] minTree = minStr.toCharArray();
+//            for(char c:minTree){
+//                minFloor--;
+//                Integer sunId;
+//                if(c=='0'){
+//                    sunId=preTreeSup.getTreeLeft();
+//                }else {
+//                    sunId=preTreeSup.getTreeRight();
+//                }
+//                preTreeSup=userDao.selectUserById(sunId);
+//               if(minFloor==1){
+//                   break;
+//               }
+//            }
+//            log.info("预父树---》"+preTreeSup);
+//            user.setTreeSupId(preTreeSup.getUserId());
+//            userDao.insertUser(user);
+//            addSuccess=true;
+//            if(preTreeSup.getTreeLeft()==null){
+//                userDao.upUserLeft(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
+//            }else if(preTreeSup.getTreeRight()==null){
+//                userDao.upUserRight(userDao.selectUserByPhoneNum(user.getPhoneNum()).getUserId(),preTreeSup.getUserId());
+//            }else {
+//                throw new AddUserException();
+//            }
+//        }
         //异步刷新收益
-        if(addSuccess){
-            //刷新本条线上左右区总人数
-            SaleUser newUser = userDao.selectUserByPhoneNum(user.getPhoneNum());
-            reLRTotal(newUser);
-            this.threadTo(newUser);
-        }
+//        if(addSuccess){
+//            //刷新本条线上左右区总人数
+//            SaleUser newUser = userDao.selectUserByPhoneNum(user.getPhoneNum());
+//            reLRTotal(newUser);
+//            this.threadTo(newUser);
+//        }
     }
 
     @Override

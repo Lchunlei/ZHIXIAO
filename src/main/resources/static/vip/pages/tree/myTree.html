@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理系统</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/weadmin.css">
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
+</head>
+<body>
+<div class="weadmin-body" >
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 we-search">
+            重新加载：
+            <div class="layui-inline">
+                <input type="text" id="nodeUserId" placeholder="自定义根节点ID(可为空)" autocomplete="off" class="layui-input" id="search">
+            </div>
+
+            <div class="layui-inline">
+                <a onclick="reTree()" class="layui-btn"><i class="layui-icon">&#x1002;</i></a>
+            </div>
+        </form>
+    </div>
+
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="container" style="height: 500%"></div>
+    <blockquote class="layui-elem-quote">
+        感谢您对 兰格商务 的辛勤付出 天道酬勤！
+    </blockquote>
+</div>
+</body>
+<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript">
+    layui.extend({
+        admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form','jquery','layer','admin'], function(){
+            $ = layui.jquery,
+            layer = layui.layer;
+            layer.prompt({
+                formType: 1,
+                title: '请输入二级密码'
+            }, function(value, index, elem){
+                $.ajax({
+                    url:"../../../sj/tree/look?secondPwd="+value
+                    ,type:"GET"
+                    ,processData:false
+                    ,contentType:false
+                    ,success:function(data_resp){
+                        if('R000'==data_resp.resultCode){
+                            reTree();
+                        }else {
+                            layer.msg(data_resp.resultMsg, {
+                                icon: 5,
+                                time: 1000
+                            });
+                        }
+                    }
+                    ,error:function(e){
+                        layer.msg("服务异常，请稍后再试！", {
+                            icon: 5,
+                            time: 1000
+                        });
+                    }
+                });
+                layer.close(index);
+            });
+    });
+
+    function reTree() {
+        var nodeUserId = document.getElementById("nodeUserId").value;
+        if(""==nodeUserId){
+            nodeUserId=0;
+        }
+        var dom = document.getElementById("container");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        myChart.showLoading();
+        $.get('../../../sj/tree/init?nodeUserId='+nodeUserId, function (data) {
+            myChart.hideLoading();
+
+            myChart.setOption(option = {
+                tooltip: {
+                    trigger: 'item',
+                    triggerOn: 'mousemove'
+                },
+                series:[
+                    {
+                        type: 'tree',
+
+                        data: [data],
+                        initialTreeDepth:-1,
+                        left: '2%',
+                        right: '2%',
+                        top: '8%',
+                        bottom: '20%',
+
+                        symbolSize:20,
+                        orient: 'vertical',
+
+                        expandAndCollapse: true,
+
+                        label: {
+                            normal: {
+                                position: 'top',
+                                rotate: -90,
+                                verticalAlign: 'middle',
+                                align: 'right',
+                                fontSize: 12
+                            }
+                        },
+
+                        leaves: {
+                            label: {
+                                normal: {
+                                    position: 'bottom',
+                                    rotate: -90,
+                                    verticalAlign: 'middle',
+                                    align: 'left'
+                                }
+                            }
+                        },
+
+                        animationDurationUpdate: 750
+                    }
+                ]
+            });
+        });
+        ;
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+    }
+
+
+</script>
+</html>

@@ -3,6 +3,7 @@ package com.ant.app.service.impl;
 import com.ant.app.Constants;
 import com.ant.app.dao.UserDao;
 import com.ant.app.entity.AppWebResult;
+import com.ant.app.entity.tree.NewTree;
 import com.ant.app.entity.tree.TreNode;
 import com.ant.app.model.SaleUser;
 import com.ant.app.service.TreeService;
@@ -22,6 +23,7 @@ public class TreeServiceImpl implements TreeService {
     private final static String ME = "我";
     @Resource
     UserDao userDao;
+
 
     //初始化用户关系树
     @Override
@@ -56,6 +58,45 @@ public class TreeServiceImpl implements TreeService {
             if(!supUser.getSecondPwd().equals(secondPwd)){
                 result.setFail(Constants.PWD_ERR);
             }
+        }
+    }
+
+    @Override
+    public void initNewTree(Integer userId, AppWebResult<NewTree> result) {
+        SaleUser supUser = userDao.selectUserById(userId);
+        //最高父节点
+        NewTree maxTree = new NewTree(supUser);
+        setLeftRight(supUser,maxTree,0);
+        result.setData(maxTree);
+    }
+
+    @Override
+    public void initNewTree(String userNum, AppWebResult<NewTree> result) {
+        SaleUser supUser = userDao.selectUserByUserNum(userNum);
+        if(supUser!=null){
+            //最高父节点
+            NewTree maxTree = new NewTree(supUser);
+            setLeftRight(supUser,maxTree,0);
+            result.setData(maxTree);
+        }
+    }
+
+    private void setLeftRight(SaleUser user,NewTree supTree,int i){
+        if(user.getTreeLeft()!=null){
+            SaleUser ul2 = userDao.selectUserById(user.getTreeLeft());
+            NewTree nl2 = new NewTree(ul2);
+            supTree.getChildren().add(nl2);
+            setLeftRight(ul2,nl2,i);
+        }
+        if(user.getTreeRight()!=null){
+            SaleUser ur2 = userDao.selectUserById(user.getTreeRight());
+            NewTree nr2 = new NewTree(ur2);
+            supTree.getChildren().add(nr2);
+            setLeftRight(ur2,nr2,i);
+        }
+        i++;
+        if(i>4){
+            return;
         }
     }
 

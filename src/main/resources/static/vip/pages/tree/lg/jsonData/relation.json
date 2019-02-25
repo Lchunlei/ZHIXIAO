@@ -1,0 +1,47 @@
+[
+{"name":"李万珠","userNum":"645642","leftTotal":1769,"rightTotal":316, "leftSurplus":1260,"rightSurplus":0,"cardType":"3",
+	"children":[
+		{"name":"妙音","userNum":"783887","leftTotal":1715,"rightTotal":49,"leftSurplus":1460,"rightSurplus":0,"cardType":"2",
+			"children":[
+				{"name":"刘岩","userNum":"376137","leftTotal":1706,"rightTotal":4,"leftSurplus":1468,"rightSurplus":0,"cardType":"1",
+					"children":[
+						{"name":"张春平","userNum":"867188","leftTotal":1693,"rightTotal":6,"leftSurplus":1457,"rightSurplus":0,"cardType":"1",
+							"children":[
+							]
+						},
+						{"name":"张小林","userNum":"199986","leftTotal":1,"rightTotal":2,"leftSurplus":0,"rightSurplus":1,"cardType":"1",
+							"children":[
+							]
+						}
+					] 
+				},
+				{"name":"闫洪涛","userNum":"503186","leftTotal":38,"rightTotal":6,"leftSurplus":7,"rightSurplus":0,"cardType":"1",
+					"children":[
+						{"name":"闫洪涛","userNum":"625096","leftTotal":6,"rightTotal":31,"leftSurplus":0,"rightSurplus":7,"cardType":"1",
+							"children":[
+							]
+						},
+						{"name":"李秋军","userNum":"604875","leftTotal":3,"rightTotal":2,"leftSurplus":0,"rightSurplus":0,"cardType":"1",
+							"children":[
+							]
+						}					]
+				
+				}
+			]
+		},
+		{"name":"李艳","userNum":"387011","leftTotal":315,"rightTotal":0,"leftSurplus":190,"rightSurplus":0,"cardType":"1",
+			"children":[
+				{"name":"杨化桂","userNum":"275547","leftTotal":38,"rightTotal":6,"leftSurplus":7,"rightSurplus":0,"cardType":"1",
+					"children":[
+						{"name":"薛萍","userNum":"702326","leftTotal":3,"rightTotal":2,"leftSurplus":0,"rightSurplus":0,"cardType":"1",
+							"children":[
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
+]
+

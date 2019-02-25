@@ -2,8 +2,10 @@ package com.ant.app.controller.sj;
 
 import com.ant.app.Constants;
 import com.ant.app.entity.AppWebResult;
+import com.ant.app.entity.tree.NewTree;
 import com.ant.app.entity.tree.TreNode;
 import com.ant.app.service.TreeService;
+import com.ant.app.utils.StringTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author lchunlei
@@ -30,18 +34,45 @@ public class TreeController {
      * data携带用户ID，并保存到session
      */
     @RequestMapping(value = "/init",method = RequestMethod.GET)
-    public TreNode treeInit(HttpSession session,Integer nodeUserId){
+    public NewTree treeInit(HttpSession session,Integer nodeUserId){
         log.info("加载树节点---》"+nodeUserId);
-        AppWebResult<TreNode> result = new AppWebResult();
+        AppWebResult<NewTree> result = new AppWebResult();
         if(session.getAttribute(Constants.USER_ID)==null){
             return null;
         }else {
             if(nodeUserId==null||nodeUserId.equals(0)){
                 nodeUserId=(int)session.getAttribute(Constants.USER_ID);
             }
-            treeService.initTree(nodeUserId,result);
+            treeService.initNewTree(nodeUserId,result);
             if(Constants.SUCCESS_CODE.equals(result.getResultCode())){
                 return result.getData();
+            }else {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * 初始化树图
+     * data携带用户ID，并保存到session
+     */
+    @RequestMapping(value = "/newInit",method = RequestMethod.GET)
+    public List treeInit(HttpSession session,String userNum){
+        log.info("加载树节点userNum---》"+userNum);
+        List<NewTree> list =new ArrayList();
+        AppWebResult<NewTree> result = new AppWebResult();
+        if(session.getAttribute(Constants.USER_ID)==null){
+            return null;
+        }else {
+            if(StringTool.isRealStr(userNum)){
+                treeService.initNewTree(userNum,result);
+            }else {
+                treeService.initNewTree((int)session.getAttribute(Constants.USER_ID),result);
+            }
+
+            if(Constants.SUCCESS_CODE.equals(result.getResultCode())){
+                list.add(result.getData());
+                return list;
             }else {
                 return null;
             }

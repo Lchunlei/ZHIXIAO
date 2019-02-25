@@ -20,11 +20,13 @@ public class SaleUser implements Serializable{
     private String thirdPwd;
     private Integer activated;//激活状态0未激活1已激活
     private Integer userStatus;
-    private Integer treeSupId;
+    private Integer treeSupId;//接点人ID
     private Integer treeLeft;
     private Integer treeRight;
     private Integer leftTotal;
     private Integer rightTotal;
+    private Integer leftSurplus;
+    private Integer rightSurplus;
     private Integer minTotal;
     private Integer refereeId;//推荐人ID
     private Integer puserId;//所属报单中心ID
@@ -41,8 +43,10 @@ public class SaleUser implements Serializable{
     private Date cTime;
 
     private String refereeUserNum;
+    private String treeSupNum;
     private String oldFirstPwd;
     private String joinMoneyYuan;
+    private Integer leftOrRight;//左0或右1
     @Override
     public String toString() {
         return "SaleUser{" +
@@ -51,12 +55,45 @@ public class SaleUser implements Serializable{
                 ", phoneNum='" + phoneNum + '\'' +
                 ", puserId=" + puserId +
                 ", refereeId=" + refereeId +
+                ", treeSupNum=" + treeSupNum +
                 ", treeSupId=" + treeSupId +
                 ", joinMoney=" + joinMoney +
                 ", registeCore=" + registeCore +
                 ", uTime=" + uTime +
                 ", cTime=" + cTime +
                 '}';
+    }
+
+    public Integer getLeftSurplus() {
+        return leftSurplus;
+    }
+
+    public void setLeftSurplus(Integer leftSurplus) {
+        this.leftSurplus = leftSurplus;
+    }
+
+    public Integer getRightSurplus() {
+        return rightSurplus;
+    }
+
+    public void setRightSurplus(Integer rightSurplus) {
+        this.rightSurplus = rightSurplus;
+    }
+
+    public Integer getLeftOrRight() {
+        return leftOrRight;
+    }
+
+    public void setLeftOrRight(Integer leftOrRight) {
+        this.leftOrRight = leftOrRight;
+    }
+
+    public String getTreeSupNum() {
+        return treeSupNum;
+    }
+
+    public void setTreeSupNum(String treeSupNum) {
+        this.treeSupNum = treeSupNum;
     }
 
     public Integer getReBack() {

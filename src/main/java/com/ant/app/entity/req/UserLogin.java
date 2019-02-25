@@ -5,23 +5,23 @@ package com.ant.app.entity.req;
  * @date 2018/12/12
  */
 public class UserLogin {
-    private String phoneNum;
+    private String userNum;
     private String firstPwd;
 
     @Override
     public String toString() {
         return "UserLogin{" +
-                "phoneNum='" + phoneNum + '\'' +
+                "userNum='" + userNum + '\'' +
                 ", firstPwd='" + firstPwd + '\'' +
                 '}';
     }
 
-    public String getPhoneNum() {
-        return phoneNum;
+    public String getUserNum() {
+        return userNum;
     }
 
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
+    public void setUserNum(String userNum) {
+        this.userNum = userNum;
     }
 
     public String getFirstPwd() {

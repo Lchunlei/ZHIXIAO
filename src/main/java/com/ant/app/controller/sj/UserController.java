@@ -2,11 +2,14 @@ package com.ant.app.controller.sj;
 
 import com.ant.app.Constants;
 import com.ant.app.entity.AppWebResult;
+import com.ant.app.entity.LayUiResult;
+import com.ant.app.entity.req.LayUiAuToReq;
 import com.ant.app.entity.req.UserLogin;
 import com.ant.app.model.SaleUser;
 import com.ant.app.model.UserIncome;
 import com.ant.app.service.InComeService;
 import com.ant.app.service.UserService;
+import com.ant.app.sql.SysTable;
 import com.ant.app.utils.MoneyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +65,7 @@ public class UserController {
      */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public AppWebResult addUser(HttpSession session,SaleUser saleUser){
+        log.info("用户添加(手机端)--->"+saleUser);
         AppWebResult result = new AppWebResult();
         Object obj = session.getAttribute(Constants.USER_ID);
         if(obj==null){
@@ -119,7 +123,7 @@ public class UserController {
      * 用户中心数据
      */
     @RequestMapping(value = "/info/index",method = RequestMethod.GET)
-    public AppWebResult findUserInfo(HttpSession session){
+    public AppWebResult findUserIndex(HttpSession session){
         AppWebResult<SaleUser> result = new AppWebResult();
         Object obj = session.getAttribute(Constants.USER_ID);
         if(obj==null){
@@ -138,7 +142,7 @@ public class UserController {
      * 查看用户资产
      */
     @RequestMapping(value = "/income",method = RequestMethod.GET)
-    public AppWebResult findUserInfo(HttpSession session,String thirdPwd){
+    public AppWebResult findUserInCome(HttpSession session,String thirdPwd){
         AppWebResult<List<UserIncome>> result = new AppWebResult();
         Object obj = session.getAttribute(Constants.USER_ID);
         if(obj==null){
@@ -184,5 +188,28 @@ public class UserController {
         }
         return result;
     }
+
+    /**
+     * 查看该保单中心会员
+     */
+    @RequestMapping(value = "/myUsers",method = RequestMethod.POST)
+    public LayUiResult myUsers(HttpSession session,LayUiAuToReq layUiAuToReq){
+        LayUiResult<SaleUser> result = new LayUiResult();
+        Object obj = session.getAttribute(Constants.USER_ID);
+        if(obj==null){
+            result.setCode(Constants.PAGE_ERROR_CODE);
+            result.setMsg(Constants.NO_LOGIN);
+        }else {
+            Integer nowUserId = (int)obj;
+            log.info("查看该保单中心会员--->"+nowUserId);
+            log.info("看该保单中心会员--->"+layUiAuToReq);
+            layUiAuToReq.tableSet(SysTable.SALE_USER,SysTable.USER_ID,SysTable.C_TIME,SysTable.USER_NAME,SysTable.USER_ID);
+            layUiAuToReq.setAntherWhere(" puserId="+nowUserId);
+            userService.findUsers(layUiAuToReq,result);
+            log.info("看该保单中心会员返回--->"+result);
+        }
+        return result;
+    }
+
 
 }

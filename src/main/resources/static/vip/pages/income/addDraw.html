@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>申请提现</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="../../static/css/font.css">
+		<link rel="stylesheet" href="../../static/css/weadmin.css">
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="weadmin-body">
+        <form class="layui-form">
+          <div class="layui-form-item">
+              <label for="drawMoney" class="layui-form-label">
+                  <span class="we-red">*</span>提现金额
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="drawMoney" name="drawMoney" required="" lay-verify="required" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-form-mid layui-word-aux">
+                  <span class="we-red">*</span>单位（元）不支持小数
+              </div>
+          </div>
+        <div class="layui-form-item">
+            <label for="drawWay" class="layui-form-label">
+                <span class="we-red">*</span>提现渠道
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="drawWay" name="drawWay" required="" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="we-red">*</span>如：建设银行、邮政储蓄、等银行
+            </div>
+        </div>
+            <div class="layui-form-item">
+                <label for="drawWayUser" class="layui-form-label">
+                    <span class="we-red">*</span>姓名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="drawWayUser" name="drawWayUser" required="" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="we-red">*</span>填写对应渠道户主姓名
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="drawWayAccount" class="layui-form-label">
+                    <span class="we-red">*</span>渠道账号
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="drawWayAccount" name="drawWayAccount" required="" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">
+                    <span class="we-red">*</span>填写对应渠道账户号
+                </div>
+            </div>
+
+          <div class="layui-form-item">
+              <label for="drawWayAccount" class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="">
+                  增加
+              </button>
+          </div>
+
+      </form>
+    </div>
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript">
+    	layui.extend({
+				admin: '{/}../../static/js/admin'
+			});
+	    layui.use(['form','jquery','layer','admin'], function(){
+	      var form = layui.form,
+	      	admin = layui.admin,
+              $ = layui.jquery,
+	      	layer = layui.layer;
+        
+          //自定义验证规则
+          form.verify({
+            nikename: function(value){
+              if(value.length < 5){
+                return '昵称至少得5个字符啊';
+              }
+            }
+              ,userNum: function(value){
+                  if(value.length < 6){
+                      return '至少得6个字符啊';
+                  }else if(value.length > 11){
+                      return '最多11个字符啊';
+                  }
+                  var re =  /^[0-9a-zA-Z]*$/;  //判断字符串是否为数字和字母组合
+                  if (!re.test(value)){
+                      return '请添数字或字母';
+                  }
+              }
+            ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+            ,repass: function(value){
+                if($('#L_pass').val()!=$('#L_repass').val()){
+                    return '两次密码不一致';
+                }
+            }
+          });
+
+          //监听提交
+          form.on('submit(add)', function(data){
+              $.ajax({
+                  url:"../../../sj/draw/apply"
+                  ,data:data.field
+                  ,type:"POST"
+                  ,dataType:"json"
+                  ,success:function(data_resp){
+                      if('R000'==data_resp.resultCode){
+                          layer.alert("申请成功!", {
+                              icon: 1
+                          }, function() {
+                              parent.table.reload('drawOrders', {});
+                              // 获得frame索引
+                              var index = parent.layer.getFrameIndex(window.name);
+                              //关闭当前frame
+                              parent.layer.close(index);
+                          });
+                      }else {
+                          layer.msg(data_resp.resultMsg, {
+                              icon: 5,
+                              time: 1000
+                          });
+                      }
+                  }
+                  ,error:function(e){
+                      layer.msg('系统异常!', {
+                          icon: 5,
+                          time: 1000
+                      });
+                  }
+              });
+            return false;
+          });
+        });
+    </script>
+  </body>
+
+</html>

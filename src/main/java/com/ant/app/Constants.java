@@ -9,6 +9,9 @@ public class Constants {
     public final static Integer JOIN_MONEY = 390000;//默认加盟费
     public final static Integer BU_MEN_MONEY = 1000;//部门奖单人奖励
     public final static double MANAGE_MONEY = 0.95;//部门管理费
+    public final static double A_MONEY = 0.65;//A网收入
+    public final static double B_MONEY = 0.30;//B网收入
+    public final static double GUAN_LI_FEI = 0.05;//部门管理费
     public final static double DRAW_SERVICE_MONEY = 0.05;//提现手续费
     public static final String XIAO_YI_SET_TIME = "01";
 
@@ -26,7 +29,8 @@ public class Constants {
     public static final Integer PAGE_ERROR_CODE = 1;
     public static final String NOT_MORE_INFO = "没有更多数据";
     public static final String AUTH_LESS = "权限不足，请联系管理员！";
-    public static final String REFORE_USER_NULL = "推荐人信息有误！";
+    public static final String REFORE_USER_NULL = "推荐人或接点人信息有误！";
+    public static final String SWAT_NOT_NULL = "节点位置不为空，请重新选择！";
     public static final String USERID_NULL = "用户不存在！";
     public static final String PHONE_HAD = "您的手机号已被注册！";
     public static final String APPLY_DRAW_ING = "审核中";

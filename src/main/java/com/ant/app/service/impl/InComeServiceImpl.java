@@ -4,8 +4,11 @@ import com.ant.app.Constants;
 import com.ant.app.dao.UserDao;
 import com.ant.app.dao.UserIncomeDao;
 import com.ant.app.entity.AppWebResult;
+import com.ant.app.entity.LayUiResult;
+import com.ant.app.entity.req.LayUiAuToReq;
 import com.ant.app.model.SaleUser;
 import com.ant.app.model.UserIncome;
+import com.ant.app.model.WebBIncome;
 import com.ant.app.service.InComeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,15 +92,48 @@ public class InComeServiceImpl implements InComeService{
                 //开始分红
                 Integer oneMoney = (int)(totalIncome*0.05*(1d/total)*Constants.MANAGE_MONEY);
                 System.out.println("每人收益---》"+oneMoney);
+                Integer aMoney = (int)(oneMoney*Constants.A_MONEY);
+                Integer bMoney = oneMoney-aMoney;
                 for (SaleUser u:users){
                     try {
-                        userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(), Constants.XIAO_YI_FEN_HONG_CODE, Constants.XIAO_YI_FEN_HONG,oneMoney));
+                        userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(), Constants.XIAO_YI_FEN_HONG_CODE, Constants.XIAO_YI_FEN_HONG,aMoney));
+                        userIncomeDao.insertBIncome(new WebBIncome(u.getUserId(),bMoney));
                         userDao.addBalance(oneMoney,u.getUserId());
                     }catch (Exception e){
                         e.printStackTrace();
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void findPcIncomes(LayUiAuToReq req, LayUiResult<UserIncome> result) {
+        req.setStartNum((req.getPage()-1)*10);
+        Integer totallNumAll = userIncomeDao.selectTotalNum(req);
+        if(totallNumAll>0){
+            result.setCode(0);
+            result.setMsg("成功");
+            result.setCount(totallNumAll);
+            result.setData(userIncomeDao.selectByPage(req));
+        }else{
+            result.setCode(Constants.PAGE_ERROR_CODE);
+            result.setMsg(Constants.NOT_MORE_INFO);
+        }
+    }
+
+    @Override
+    public void findBwebIncomes(LayUiAuToReq req, LayUiResult<WebBIncome> result) {
+        req.setStartNum((req.getPage()-1)*10);
+        Integer totallNumAll = userIncomeDao.selectBwebTotalNum(req);
+        if(totallNumAll>0){
+            result.setCode(0);
+            result.setMsg("成功");
+            result.setCount(totallNumAll);
+            result.setData(userIncomeDao.selectBwebByPage(req));
+        }else{
+            result.setCode(Constants.PAGE_ERROR_CODE);
+            result.setMsg(Constants.NOT_MORE_INFO);
         }
     }
 
@@ -111,7 +147,10 @@ public class InComeServiceImpl implements InComeService{
                     SaleUser lUser = userDao.selectUserById(oneUser.getTreeLeft());
                     if(lUser.getJoinMoney()>0){
                         int oneMoney = (int)(newUser.getJoinMoney()*Constants.MANAGE_MONEY);
-                        userIncomeDao.insertUserIncome(new UserIncome(newUser.getTreeSupId(), Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,oneMoney));
+                        Integer aMoney = (int)(oneMoney*Constants.A_MONEY);
+                        Integer bMoney = oneMoney-aMoney;
+                        userIncomeDao.insertUserIncome(new UserIncome(newUser.getTreeSupId(), Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,aMoney));
+                        userIncomeDao.insertBIncome(new WebBIncome(newUser.getTreeSupId(),bMoney));
                         userDao.addBalance(oneMoney,newUser.getTreeSupId());
                     }
                 }else {
@@ -123,7 +162,10 @@ public class InComeServiceImpl implements InComeService{
                         SaleUser rUser = userDao.selectUserById(twoUser.getTreeRight());
                         if(lUser.getTreeLeft()!=null&&rUser.getTreeLeft()!=null){
                             int mpney = (int)(newUser.getJoinMoney()/2*Constants.MANAGE_MONEY);
-                            userIncomeDao.insertUserIncome(new UserIncome(twoUser.getUserId(),Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,mpney));
+                            Integer aMoney = (int)(mpney*Constants.A_MONEY);
+                            Integer bMoney = mpney-aMoney;
+                            userIncomeDao.insertUserIncome(new UserIncome(twoUser.getUserId(),Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,aMoney));
+                            userIncomeDao.insertBIncome(new WebBIncome(twoUser.getUserId(),bMoney));
                             userDao.addBalance(mpney,twoUser.getUserId());
                             //上3层
 //                        SaleUser u1 = userDao.selectUserById(lUser.getTreeRight());
@@ -152,11 +194,14 @@ public class InComeServiceImpl implements InComeService{
             Integer upUserId=newUser.getTreeSupId();
             Integer newUserId = newUser.getUserId();
             int money =(int)(Constants.BU_MEN_MONEY*Constants.MANAGE_MONEY);
+            Integer aMoney = (int)(money*Constants.A_MONEY);
+            Integer bMoney = money-aMoney;
             for(int i=0;i<20;i++){
                 upUser = userDao.selectUserById(upUserId);
                 //位于左区有效
                 if(upUser.getTreeLeft().equals(newUserId)){
-                    userIncomeDao.insertUserIncome(new UserIncome(upUserId,Constants.BU_MEN_JIANG_CODE, Constants.BU_MEN_JIANG,money));
+                    userIncomeDao.insertUserIncome(new UserIncome(upUserId,Constants.BU_MEN_JIANG_CODE, Constants.BU_MEN_JIANG,aMoney));
+                    userIncomeDao.insertBIncome(new WebBIncome(upUserId,bMoney));
                     userDao.addBalance(money,upUserId);
                 }
                 newUserId=upUserId;
@@ -193,15 +238,21 @@ public class InComeServiceImpl implements InComeService{
                     }else {
                         money= (int)(nowMoney*0.1*Constants.MANAGE_MONEY);
                     }
-                    userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(),Constants.ZU_ZHI_JIANG_CODE, Constants.ZU_ZHI_JIANG,money));
+                    Integer aMoney = (int)(money*Constants.A_MONEY);
+                    Integer bMoney = money-aMoney;
+                    userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(),Constants.ZU_ZHI_JIANG_CODE, Constants.ZU_ZHI_JIANG,aMoney));
+                    userIncomeDao.insertBIncome(new WebBIncome(u.getUserId(),bMoney));
                     userDao.addBalance(money,u.getUserId());
                     //增加管理奖
                     Integer upRefereeId=u.getRefereeId();
                     if(upRefereeId!=null){
                         SaleUser upUser = userDao.selectUserById(upRefereeId);
                         int moneyG =(int)(money*0.05*Constants.MANAGE_MONEY);
+                        Integer a1Money = (int)(moneyG*Constants.A_MONEY);
+                        Integer b1Money = money-aMoney;
                         for(int i=0;i<5;i++){
-                            userIncomeDao.insertUserIncome(new UserIncome(upUser.getUserId(), Constants.GUAN_LI_JIANG_CODE, Constants.GUAN_LI_JIANG,moneyG));
+                            userIncomeDao.insertUserIncome(new UserIncome(upUser.getUserId(), Constants.GUAN_LI_JIANG_CODE, Constants.GUAN_LI_JIANG,a1Money));
+                            userIncomeDao.insertBIncome(new WebBIncome(upUser.getUserId(),b1Money));
                             userDao.addBalance(moneyG,upUser.getUserId());
                             upRefereeId=upUser.getRefereeId();
                             if(upRefereeId==null){
@@ -254,7 +305,10 @@ public class InComeServiceImpl implements InComeService{
             }
             if(moneyPre>0){
                 int money = (int)(moneyPre*0.01*Constants.MANAGE_MONEY);
-                userIncomeDao.insertUserIncome(new UserIncome(newUser.getUserId(), Constants.XING_YUN_FEN_HONG_CODE, Constants.XING_YUN_FEN_HONG,money));
+                Integer a1Money = (int)(money*Constants.A_MONEY);
+                Integer b1Money = money-a1Money;
+                userIncomeDao.insertUserIncome(new UserIncome(newUser.getUserId(), Constants.XING_YUN_FEN_HONG_CODE, Constants.XING_YUN_FEN_HONG,a1Money));
+                userIncomeDao.insertBIncome(new WebBIncome(newUser.getUserId(),b1Money));
                 userDao.addBalance(money,newUser.getUserId());
             }
         }catch (Exception e){
@@ -267,7 +321,7 @@ public class InComeServiceImpl implements InComeService{
     private void reSetMin(){
         Integer maxId = userDao.selectUserMaxId();
         SaleUser u;
-        while (maxId>0){
+        while (maxId>999999){
             try {
                 u=userDao.selectUserById(maxId);
                 if(u!=null){

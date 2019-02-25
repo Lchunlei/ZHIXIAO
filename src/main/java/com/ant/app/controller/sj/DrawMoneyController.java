@@ -2,11 +2,14 @@ package com.ant.app.controller.sj;
 
 import com.ant.app.Constants;
 import com.ant.app.entity.AppWebResult;
+import com.ant.app.entity.LayUiResult;
 import com.ant.app.entity.req.DrawMoneyReq;
+import com.ant.app.entity.req.LayUiAuToReq;
 import com.ant.app.model.SaleUser;
 import com.ant.app.model.UserDraw;
 import com.ant.app.service.UserDrawService;
 import com.ant.app.service.UserService;
+import com.ant.app.sql.SysTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +101,26 @@ public class DrawMoneyController {
             }else {
                 return re;
             }
+        }
+        return result;
+    }
+
+    /**
+     * 个人提现列表 PC
+     */
+    @RequestMapping(value = "/myList",method = RequestMethod.POST)
+    public LayUiResult myPcList(HttpSession session, LayUiAuToReq layUiAuToReq){
+        log.info("个人提现列表 PC查看--->"+layUiAuToReq);
+        layUiAuToReq.tableSet(SysTable.USER_DRAW,SysTable.DRAW_ID,SysTable.C_TIME,SysTable.DRAW_WAY_USER,SysTable.DRAW_ID);
+        LayUiResult<UserDraw> result = new LayUiResult();
+        Object obj = session.getAttribute(Constants.USER_ID);
+        if(obj==null){
+            result.setCode(Constants.PAGE_ERROR_CODE);
+            result.setMsg(Constants.NO_LOGIN);
+        }else {
+            Integer nowUserId = (int)obj;
+            layUiAuToReq.setAntherWhere(" userId="+nowUserId);
+            userDrawService.findDraws(layUiAuToReq,result);
         }
         return result;
     }

@@ -1,6 +1,7 @@
 package com.ant.app.service;
 
 import com.ant.app.entity.AppWebResult;
+import com.ant.app.entity.tree.NewTree;
 import com.ant.app.entity.tree.TreNode;
 
 /**
@@ -13,5 +14,8 @@ public interface TreeService {
 
     public void preFindTree(Integer userId, String secondPwd, AppWebResult result);
 
+    public void initNewTree(Integer userId, AppWebResult<NewTree> result);
+
+    public void initNewTree(String userNum, AppWebResult<NewTree> result);
 
 }

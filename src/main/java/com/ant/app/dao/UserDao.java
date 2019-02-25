@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface UserDao {
 
-    @Insert("INSERT INTO sale_user(`userName`,`userNum`,`phoneNum`,`treeSupId`,`puserId`, `refereeId`,`firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`joinMoney`,`coin`,`cTime`) VALUES (#{userName},#{userNum},#{phoneNum},#{treeSupId},#{puserId},#{refereeId},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},#{joinMoney},#{coin},NOW())")
+    @Insert("INSERT INTO sale_user(`userName`,`userNum`,`treeSupId`,`puserId`, `refereeId`,`firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`joinMoney`,`coin`,`cTime`) VALUES (#{userName},#{userNum},#{treeSupId},#{puserId},#{refereeId},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},#{joinMoney},#{coin},NOW())")
     Integer insertUser(SaleUser saleUser);
 
     @Insert("INSERT INTO sale_user(`userName`,`phoneNum`, `firstPwd`,`secondPwd`,`thirdPwd`,`registeCore`,`registeCoreMoney`,`cTime`) VALUES (#{userName},#{phoneNum},#{firstPwd},#{secondPwd},#{thirdPwd},#{registeCore},#{registeCoreMoney},NOW())")
@@ -89,7 +89,7 @@ public interface UserDao {
     @Update("UPDATE sale_user SET treeSupId=${treeSupId},puserId=${puserId},refereeId=${refereeId},joinMoney=${joinMoney},coin=${coin},uTime=NOW() WHERE userId=${userId}")
     Integer upNewUser(SaleUser saleUser);
 
-    @Update("UPDATE sale_user SET firstPwd=#{firstPwd},secondPwd=#{secondPwd},thirdPwd=#{thirdPwd},uTime=NOW() WHERE userId=${userId}")
+    @Update("UPDATE sale_user SET firstPwd=#{firstPwd},secondPwd=#{secondPwd},thirdPwd=#{thirdPwd},userName=#{userName},uTime=NOW() WHERE userId=${userId}")
     Integer updateUserPwd(SaleUser saleUser);
 
     /**

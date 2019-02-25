@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>组织结构图</title>
+<link href="lg/css/main.css" rel="stylesheet" type="text/css" />
+<link href="lg/css/css.css" rel="stylesheet" type="text/css" />
+
+<STYLE>
+.tu_box {
+	BACKGROUND-COLOR: #aaa;
+	WIDTH: 80px;
+	COLOR: #000
+}
+
+.tu_box TD {
+	TEXT-ALIGN: center;
+	LINE-HEIGHT: 16px;
+	HEIGHT: 16px
+}
+
+.tu_ko {
+	LINE-HEIGHT: 40px !important;
+	BACKGROUND-COLOR: #fff;
+	HEIGHT: 40px
+}
+
+.tu_l {
+	WIDTH: 35%
+}
+
+.tu_z {
+	WIDTH: 30%
+}
+
+.tu_r {
+	WIDTH: 35%
+}
+
+TD {
+	BORDER-BOTTOM: #9dc4db 0px solid;
+	BORDER-LEFT: #9dc4db 0px solid;
+	PADDING-BOTTOM: 2px;
+	PADDING-LEFT: 2px;
+	PADDING-RIGHT: 2px;
+	BORDER-TOP: #9dc4db 0px solid;
+	BORDER-RIGHT: #9dc4db 0px solid;
+	PADDING-TOP: 2px
+}
+
+A {
+	COLOR: #0033cc
+}
+
+.tbl table {
+	width: 75px;
+}
+</STYLE>
+</head>
+<body>
+	<div id="wrap">
+		<div id="main">
+			<div id='place'>
+				<span>组织结构</span>
+			</div>
+			<div class="middle">
+				<div class='column'>
+					<div class="c">
+						<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+							<TBODY>
+								<TR>
+									<form name="form1" action="" method="get">
+
+										<TD>会员编号： <INPUT title="帐号查询" type="text" name="username">
+										<INPUT onclick="initSearch()" class="btn1" value="查询" type="button" name="search">
+									</form>
+									</TD>
+								</TR>
+								<!-- -->
+								<TR>
+									<TD>
+										<TABLE border=0 cellSpacing=1 cellPadding=1 width="100%">
+											<TBODY>
+												
+												<TR align=middle>
+													<TD title="第1层" vAlign=top width="100%" colspan=8>
+													<IMG width=12 height=0><BR>
+													<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+														<TBODY id="tree_1">
+															<TR>
+																<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+															</TR>
+														</TBODY>
+													</TABLE>
+													</TD>
+
+												</TR>
+
+												<TR align=middle>
+													<TD vAlign=top width="100%" colspan=8>
+														<IMG src='lg/image/t_tree_bottom_l.gif' height=20>
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20> 
+														<IMG alt=顶层 src="lg/image/t_tree_top.gif" height=20> 
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20>
+														<IMG src="lg/image/t_tree_bottom_r.gif" height=20>
+													</TD>
+												</TR>
+												
+												<TR align=middle>
+
+													<TD title=第1层 vAlign=top width="50%" class="tbl" colspan=4>
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_1">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE></TD>
+
+													<TD title=第1层 vAlign=top width="50%" class="tbl" colspan=4>
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_2">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+												</TR>
+												
+												
+												<TR align=middle>
+
+													<TD vAlign=top width="50%" colspan=4>
+														<IMG src='lg/image/t_tree_bottom_l.gif' height=20>
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20> 
+														<IMG alt=顶层 src="lg/image/t_tree_top.gif" height=20> 
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20>
+														<IMG src="lg/image/t_tree_bottom_r.gif" height=20>
+													</TD>
+
+													<TD vAlign=top width="50%" colspan=4>
+														<IMG src='lg/image/t_tree_bottom_l.gif' height=20>
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20> 
+														<IMG alt=顶层 src="lg/image/t_tree_top.gif" height=20> 
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20> 
+														<IMG src="lg/image/t_tree_bottom_r.gif" height=20>
+													</TD>
+												</TR>
+												
+												<TR align=middle>
+
+													<TD title=第2层 vAlign=top width="25%" class="tbl" colspan=2>
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_1_1">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE></TD>
+
+													<TD title=第2层 vAlign=top width="25%" class="tbl" colspan=2>
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_1_2">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+													<TD title=第2层 vAlign=top width="25%" class="tbl" colspan=2>
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_2_1">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+													<TD title=第2层 vAlign=top width="25%" class="tbl" colspan=2>
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_2_2">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+												</TR>
+											
+												<TR align=middle>
+
+													<TD vAlign=top width="25%" colspan=2>
+														<IMG src='lg/image/t_tree_bottom_l.gif' height=20> 
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20>
+														<IMG alt=顶层 src="lg/image/t_tree_top.gif" height=20>
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20> 
+														<IMG src="lg/image/t_tree_bottom_r.gif" height=20>
+													</TD>
+
+													<TD vAlign=top width="25%" colspan=2>
+														<IMG src='lg/image/t_tree_bottom_l.gif' height=20>
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20> 
+														<IMG alt=顶层 src="lg/image/t_tree_top.gif" height=20> 
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20>
+														<IMG src="lg/image/t_tree_bottom_r.gif" height=20>
+													</TD>
+
+													<TD vAlign=top width="25%" colspan=2>
+														<IMG src='lg/image/t_tree_bottom_l.gif' height=20>
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20> 
+														<IMG alt=顶层 src="lg/image/t_tree_top.gif" height=20> 
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20>
+														<IMG src="lg/image/t_tree_bottom_r.gif" height=20>
+													</TD>
+
+													<TD vAlign=top width="25%" colspan=2>
+														<IMG src='lg/image/t_tree_bottom_l.gif' height=20>
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20>
+														<IMG alt=顶层 src="lg/image/t_tree_top.gif" height=20> 
+														<IMG src="lg/image/t_tree_line.gif" width="25%" height=20>
+														<IMG src="lg/image/t_tree_bottom_r.gif" height=20>
+													</TD>
+												</TR>
+											
+												<TR align=middle>
+													<TD title=第3层 vAlign=top width="12.5%" class="tbl">
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_1_1_1">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置3</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+													<TD title=第3层 vAlign=top width="12.5%" class="tbl">
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_1_1_2">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置2</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+													<TD title=第3层 vAlign=top width="12.5%" class="tbl">
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_1_2_1">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置1</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+													<TD title=第3层 vAlign=top width="12.5%" class="tbl">
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_1_2_2">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+													<TD title=第3层 vAlign=top width="12.5%" class="tbl">
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_2_1_1">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+													<TD title=第3层 vAlign=top width="12.5%" class="tbl">
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_2_1_2">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+													<TD title=第3层 vAlign=top width="12.5%" class="tbl">
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_2_2_1">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+													<TD title=第3层 vAlign=top width="12.5%" class="tbl">
+														<IMG width=12 height=0><BR>
+														<TABLE class=tu_box border=0 cellSpacing=1 cellPadding=0>
+															<TBODY id="tree_1_2_2_2">
+																<TR>
+																	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>
+																</TR>
+															</TBODY>
+														</TABLE>
+													</TD>
+
+												</TR>
+
+											</TBODY>
+										</TABLE>
+									</TD>
+								</TR>
+							</TBODY>
+						</TABLE>
+						</TD>
+						</TR>
+						<TR>
+							<TD>&nbsp;</TD>
+						</TR>
+						<TR>
+							<!--
+							<TD>
+								<TABLE border="0" cellSpacing="0" cellPadding="0" width="100%">
+									<TBODY>
+										<TR>
+											<TD width="50%" align=middle>
+												<TABLE border="0" cellSpacing="1" cellPadding="0" width="90%" bgColor=#66cc99>
+													<TBODY>
+														<TR style="COLOR: #000" align="middle">
+															<TD bgColor=#ffffff>上层</TD>
+															<TD style="BACKGROUND: #99cccc">普卡</TD>
+															<TD style="BACKGROUND: #ff9966">银卡</TD>
+															<TD style="BACKGROUND: #ffff00">金卡</TD>
+														</TR>
+													</TBODY>
+												</TABLE>
+											</TD>
+											<TD width="50%" align=middle>
+												<TABLE border="0" cellSpacing="1" cellPadding="0" width="90%" bgColor="#66cc99">
+													<TBODY>
+														<TR style="COLOR: #000" align="middle">
+															<TD bgColor="#ffffff">下层</TD>
+															<TD style="BACKGROUND: #6FB5E6">开通会员</TD>
+															<TD style="BACKGROUND: #CC3300">未开通会员</TD>
+															<TD style="BACKGROUND: #cccccc">空缺位置</TD>
+														</TR>
+													</TBODY>
+												</TABLE>
+											</TD>
+									</TBODY>
+								</TABLE>
+							</TD>
+							-->
+						</TR>
+						</TR>
+						</TABLE>
+
+						<div class="space"></div>
+						<!--  左区发展：492人 业绩 1769 &nbsp;&nbsp;
+			右区发展：4人 业绩 316&nbsp;&nbsp;直接推荐 1人  
+           -->
+						&nbsp;&nbsp;
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="foot">
+			<ul>
+				<li>版权所有：Copyright ©2018 Business All Rights Reserved</li>
+				<!--<li>服务电话：&nbsp;&nbsp;</li>-->
+			</ul>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" src="lg/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+
+function getColor(v){
+	var rstr = "99cccc"; //普卡 1
+	if(v==3){	//金卡
+		rstr = "ffff00";
+	}else if(v==2){	//2银卡
+		rstr = "ff9966";
+	} 
+	return rstr;
+}
+
+function tableInfo(dt){
+	var type = getColor(dt.cardType)
+	var tinfo = "";
+	tinfo += "<TR>";
+	tinfo += "	<TD style='width:75px;BACKGROUND: #"+type+"; FONT-WEIGHT: bold' colSpan=3 align=center>";
+	tinfo += "		<A href='javascript:void(0)' onclick='javascript:initTree("+dt.userNum+")'>";
+	tinfo += 		dt.userNum+"<BR>"+dt.name;
+	tinfo += "		</A>";
+	tinfo += "	</TD>";
+	tinfo += "</TR>";
+	tinfo += "<TR>";
+	tinfo += "	<TD class=tu_l;>"+dt.leftTotal+"</TD>";
+	tinfo += "	<TD class=tu_z;>总</TD>";
+	tinfo += "	<TD class=tu_r;>"+dt.rightTotal+"</TD>";
+	tinfo += "</TR>";
+	tinfo += "<TR>";
+	tinfo += "	<TD class=tu_l;>"+dt.leftSurplus+"</TD>";
+	tinfo += "	<TD class=tu_z;>余</TD>";
+	tinfo += "	<TD class=tu_r;>"+dt.rightSurplus+"</TD>";
+	tinfo += "</TR>";
+
+	return tinfo;
+}
+
+function dealData(data,nodeId){
+	
+	for(var i=0;i<data.length;i++){
+		var nodeInfo = tableInfo(data[i]);
+		var nodeIdsub = nodeId+"_"+(i+1);
+		$("#"+nodeIdsub).empty();
+		$("#"+nodeIdsub).html(nodeInfo);
+		var childrens = data[i].children;
+		if(childrens.length > 0){
+			dealData(childrens,nodeIdsub);
+		}
+	}
+	
+}
+
+function initTree(userNum,pre){
+	if(pre == undefined){
+		pre = false;
+	}
+	initEmptyTree();
+	//获得所有的产品分类
+	$.ajax({
+		url: "../../../sj/tree/newInit?userNum="+userNum,
+		type: "get",
+		cache: true,
+		dataType:"json",
+		async:true,
+		success: function (result) {
+			if(result){
+				dealData(result,"tree");
+				var ser = "";
+				if(result.length > 0){
+					ser = result[0].userNum;
+				}
+				$("input[name='username']").val(ser);
+			}
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			//alert("系统异常，请联系管理员");
+		}
+	}); 
+}
+
+function emptyInfo(){
+	var ei = "";
+	ei += "<TR>";
+	ei += "	<TD style='BACKGROUND: #e1dfdd' class=tu_ko>空位置</TD>";
+	ei += "</TR>";
+	return ei;
+}
+function initEmptyTree(){
+	var einfo = emptyInfo();
+	$('[id^="tree_"]').empty();
+	$('[id^="tree_"]').html(einfo);
+}
+	
+initTree("");
+
+function initSearch(){
+	var username = $("input[name='username']").val();
+	initTree(username,false);
+}
+function initPreSearch(){
+	var username = $("input[name='username']").val();
+	initTree(username,true);
+}
+</script>
+
+</html>
+
