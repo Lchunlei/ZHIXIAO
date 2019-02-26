@@ -18,29 +18,29 @@
   
   <body>
     <div class="weadmin-body">
-        <form class="layui-form">
-            <div class="layui-form-item">
-                <label for="userName" class="layui-form-label">
-                    <span class="we-red">*</span>新会员姓名
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="userName" name="userName" required="" lay-verify="required" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="we-red">*</span>让别人更好的记住你哦
-                </div>
+        <form class="layui-form" id="addUser">
+          <div class="layui-form-item">
+              <label for="userName" class="layui-form-label">
+                  <span class="we-red">*</span>新会员姓名
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="userName" name="userName" required="" lay-verify="required" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-form-mid layui-word-aux">
+                  <span class="we-red">*</span>让别人更好的记住你哦
+              </div>
+          </div>
+        <div class="layui-form-item">
+            <label for="userNum" class="layui-form-label">
+                <span class="we-red">*</span>新会员编号
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="userNum" name="userNum" required="" lay-verify="userNum" autocomplete="off" class="layui-input">
             </div>
-            <div class="layui-form-item">
-                <label for="userNum" class="layui-form-label">
-                    <span class="we-red">*</span>新会员编号
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="userNum" name="userNum" required="" lay-verify="userNum" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="we-red">*</span>6-11位数字或字母
-                </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="we-red">*</span>6-11位数字或字母
             </div>
+        </div>
             <!--
           <div class="layui-form-item">
               <label for="phoneNum" class="layui-form-label">
@@ -54,6 +54,8 @@
               </div>
           </div>
             -->
+            <input type="text" id="treeSupNum" name="treeSupNum" hidden>
+            <input type="text" id="leftOrRight" name="leftOrRight" hidden>
             <div class="layui-form-item">
                 <label for="username" class="layui-form-label">
                     <span class="we-red">*</span>报单金额
@@ -74,17 +76,6 @@
                 </div>
                 <div class="layui-form-mid layui-word-aux">
                     <span class="we-red">*</span>请输入推荐人编号
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="treeSupNum" class="layui-form-label">
-                    <span class="we-red">*</span>接点人编号
-                </label>
-                <div class="layui-input-inline">
-                    <input type="text" id="treeSupNum" name="treeSupNum" required="" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">
-                    <span class="we-red">*</span>接点人编号
                 </div>
             </div>
 
@@ -108,7 +99,21 @@
 	      	admin = layui.admin,
               $ = layui.jquery,
 	      	layer = layui.layer;
-        
+
+            var url = location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for(var i = 0; i < strs.length; i ++) {
+                    theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+                }
+            }
+            console.log(theRequest);
+            $('#treeSupNum').val(theRequest.userNum);
+            $('#leftOrRight').val(theRequest.leftOrRight);
+
+            //return theRequest;
           //自定义验证规则
           form.verify({
             nikename: function(value){
@@ -138,7 +143,7 @@
           //监听提交
           form.on('submit(add)', function(data){
               $.ajax({
-                  url:"../../../sj/user/pc/add"
+                  url:"../../../sj/user/add"
                   ,data:data.field
                   ,type:"POST"
                   ,dataType:"json"
@@ -147,7 +152,7 @@
                           layer.alert("添加成功!", {
                               icon: 1
                           }, function() {
-                              parent.table.reload('saleUsers', {});
+                              parent.refreshWeb();
                               // 获得frame索引
                               var index = parent.layer.getFrameIndex(window.name);
                               //关闭当前frame

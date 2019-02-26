@@ -49,6 +49,9 @@
                       ,success:function(data_resp){
                           if('R000'==data_resp.resultCode){
                               location.href='./index.html'
+                          }else if("RE00"==data_resp.resultCode){
+
+                              location.href='./index.html'
                           }else {
                               layer.msg(data_resp.resultMsg, {
                                   icon: 5,

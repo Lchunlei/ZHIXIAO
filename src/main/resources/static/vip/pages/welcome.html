@@ -24,24 +24,23 @@
 									<div carousel-item="">
 
 										<ul class="layui-row layui-col-space10 layui-this">
+
 											<li class="layui-col-xs3">
 												<a href="javascript:void(0);" target="_blank">
 													<i class="layui-icon" id="t1">0</i>
-													<cite>总资产</cite>
-													<!--
-													<p><span>Layui作者一个字节一个字节撸出来的精华，数以万计用户的指明灯</span></p>
-													-->
+													<cite>我的编号</cite>
 												</a>
 											</li>
+
+											<!--
 											<li class="layui-col-xs3">
 												<a href="javascript:void(0);" target="_blank">
 													<i class="layui-icon" id="t2">0</i>
 													<cite>会员总数</cite>
-													<!--
 													<p><span>Layui官方出品的专业后台管理模板</span></p>
-													-->
 												</a>
 											</li>
+											-->
 											<li class="layui-col-xs3">
 												<a href="javascript:void(0);" target="_blank">
 													<i class="layui-icon" id="t3">0</i>
@@ -377,15 +376,15 @@
 			    console.log(str);
 			 };
             $.ajax({
-                url:"../../pc/sys/index/init"
+                url:"../../vip/web/init"
                 ,type:"GET"
                 ,dataType:"json"
                 ,success:function(data_resp){
                     if('R000'==data_resp.resultCode){
-                        $("#t1").text(data_resp.data.totalIncomeYuan);
-                        $("#t2").text(data_resp.data.totalUser);
-                        $("#t3").text(data_resp.data.yesIncomeYuan);
-                        $("#t4").text(data_resp.data.yesUser);
+                        $("#t1").text(data_resp.data.userNum);
+                        //$("#t2").text(data_resp.data.totalUser);
+                        $("#t3").text(data_resp.data.point);
+                        $("#t4").text(data_resp.data.registCoin);
                     }
                 }
                 ,error:function(e){

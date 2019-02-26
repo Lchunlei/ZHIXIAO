@@ -135,7 +135,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void addSaleUser(SaleUser user, Integer nowCoreId, AppWebResult result) {
-
+        if(nowCoreId<100000){
+            SysLog sysLog = new SysLog(nowCoreId,"管理员添加会员:"+user.getUserNum());
+            sysLogDao.insertSysLog(sysLog);
+            nowCoreId=userDao.selectMinId();
+        }
         //校验新用户数据
         SaleUser oldUser1 = userDao.selectUserByUserNum(user.getUserNum());
         if(oldUser1==null){
@@ -157,17 +161,17 @@ public class UserServiceImpl implements UserService {
         }else {
             if(user.getLeftOrRight()==null){
                 if(treeSupUser.getTreeLeft()==null){
-                    user.setLeftOrRight(0);
-                }else if(treeSupUser.getTreeRight()==null){
                     user.setLeftOrRight(1);
+                }else if(treeSupUser.getTreeRight()==null){
+                    user.setLeftOrRight(2);
                 }else {
                     result.setFail(Constants.SWAT_NOT_NULL);
                     return;
                 }
             }else {
-                if(user.getLeftOrRight().equals(0)&&treeSupUser.getTreeLeft()==null){
+                if(user.getLeftOrRight().equals(1)&&treeSupUser.getTreeLeft()==null){
 
-                }else if(user.getLeftOrRight().equals(1)&&treeSupUser.getTreeRight()==null){
+                }else if(user.getLeftOrRight().equals(2)&&treeSupUser.getTreeRight()==null){
 
                 }else {
                     result.setFail(Constants.SWAT_NOT_NULL);
@@ -190,7 +194,7 @@ public class UserServiceImpl implements UserService {
         user.setPuserId(nowCoreId);//赋值报单中心ID
         user.setTreeSupId(treeSupUser.getUserId());
         userDao.insertUser(user);
-        if(user.getLeftOrRight().equals(0)){
+        if(user.getLeftOrRight().equals(1)){
             userDao.upUserLeft(userDao.selectUserByUserNum(user.getUserNum()).getUserId(),user.getTreeSupId());
         }else {
             userDao.upUserRight(userDao.selectUserByUserNum(user.getUserNum()).getUserId(),user.getTreeSupId());

@@ -65,7 +65,17 @@ public class TreeServiceImpl implements TreeService {
     public void initNewTree(Integer userId, AppWebResult<NewTree> result) {
         SaleUser supUser = userDao.selectUserById(userId);
         //最高父节点
-        NewTree maxTree = new NewTree(supUser);
+        NewTree maxTree = new NewTree(supUser,1);
+        setLeftRight(supUser,maxTree,0);
+        result.setData(maxTree);
+    }
+
+    @Override
+    public void initNewTree(AppWebResult<NewTree> result) {
+        Integer minId = userDao.selectMinId();
+        SaleUser supUser = userDao.selectUserById(minId);
+        //最高父节点
+        NewTree maxTree = new NewTree(supUser,1);
         setLeftRight(supUser,maxTree,0);
         result.setData(maxTree);
     }
@@ -75,7 +85,7 @@ public class TreeServiceImpl implements TreeService {
         SaleUser supUser = userDao.selectUserByUserNum(userNum);
         if(supUser!=null){
             //最高父节点
-            NewTree maxTree = new NewTree(supUser);
+            NewTree maxTree = new NewTree(supUser,1);
             setLeftRight(supUser,maxTree,0);
             result.setData(maxTree);
         }
@@ -84,13 +94,13 @@ public class TreeServiceImpl implements TreeService {
     private void setLeftRight(SaleUser user,NewTree supTree,int i){
         if(user.getTreeLeft()!=null){
             SaleUser ul2 = userDao.selectUserById(user.getTreeLeft());
-            NewTree nl2 = new NewTree(ul2);
+            NewTree nl2 = new NewTree(ul2,1);
             supTree.getChildren().add(nl2);
             setLeftRight(ul2,nl2,i);
         }
         if(user.getTreeRight()!=null){
             SaleUser ur2 = userDao.selectUserById(user.getTreeRight());
-            NewTree nr2 = new NewTree(ur2);
+            NewTree nr2 = new NewTree(ur2,2);
             supTree.getChildren().add(nr2);
             setLeftRight(ur2,nr2,i);
         }

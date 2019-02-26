@@ -28,6 +28,9 @@ public interface UserDao {
     @Select("SELECT * FROM sale_user WHERE userNum=#{userNum}")
     SaleUser selectUserByUserNum(@Param("userNum") String userNum);
 
+    @Select("SELECT MIN(userId) FROM sale_user")
+    Integer selectMinId();
+
     @Select("SELECT * FROM sale_user WHERE userId=${userId}")
     SaleUser selectUserById(@Param("userId") Integer userId);
 

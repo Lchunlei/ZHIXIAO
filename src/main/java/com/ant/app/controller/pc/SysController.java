@@ -4,10 +4,12 @@ import com.ant.app.Constants;
 import com.ant.app.entity.AppWebResult;
 import com.ant.app.entity.req.AdminLogin;
 import com.ant.app.entity.resp.IndexData;
+import com.ant.app.entity.tree.NewTree;
 import com.ant.app.entity.tree.TreNode;
 import com.ant.app.model.SaleUser;
 import com.ant.app.model.SysAdmin;
 import com.ant.app.service.*;
+import com.ant.app.utils.StringTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -74,6 +77,34 @@ public class SysController {
         }else {
             return null;
         }
+    }
+
+    /**
+     * 查看新树
+     */
+    @RequestMapping(value = "/newTree",method = RequestMethod.GET)
+    public List newTree(HttpSession session,String userNum){
+        List<NewTree> list =new ArrayList();
+        AppWebResult<NewTree> result = new AppWebResult();
+        log.info("PC加载树节点userNum---》"+userNum);
+        Object obj = session.getAttribute(Constants.ADMIN_ID);
+        if(obj==null){
+            result.setResultCode(Constants.NO_LOGIN_CODE);
+            result.setResultMsg(Constants.NO_LOGIN);
+        }else {
+            if(StringTool.isRealStr(userNum)){
+                treeService.initNewTree(userNum,result);
+            }else {
+                treeService.initNewTree(result);
+            }
+            if(Constants.SUCCESS_CODE.equals(result.getResultCode())){
+                list.add(result.getData());
+                return list;
+            }else {
+                return null;
+            }
+        }
+        return list;
     }
 
     /**

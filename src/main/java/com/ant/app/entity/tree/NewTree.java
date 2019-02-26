@@ -12,6 +12,7 @@ public class NewTree {
     private String name;
     private String userNum;
     private Integer cardType;//默认为1
+    private Integer leftOrRight;//默认为1是左
     private Integer leftTotal;
     private Integer rightTotal;
     private Integer leftSurplus;
@@ -21,15 +22,24 @@ public class NewTree {
     public NewTree() {
     }
 
-    public NewTree(SaleUser user) {
+    public NewTree(SaleUser user,Integer leftOrRight) {
         this.name = user.getUserName();
         this.cardType = 1;
+        this.leftOrRight = leftOrRight;
         this.userNum = user.getUserNum();
         this.leftTotal = user.getLeftTotal();
         this.rightTotal = user.getRightTotal();
         this.leftSurplus = user.getLeftSurplus();
         this.rightSurplus = user.getRightSurplus();
         this.children = new ArrayList();
+    }
+
+    public Integer getLeftOrRight() {
+        return leftOrRight;
+    }
+
+    public void setLeftOrRight(Integer leftOrRight) {
+        this.leftOrRight = leftOrRight;
     }
 
     public String getName() {

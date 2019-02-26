@@ -16,6 +16,8 @@ public interface TreeService {
 
     public void initNewTree(Integer userId, AppWebResult<NewTree> result);
 
+    public void initNewTree(AppWebResult<NewTree> result);
+
     public void initNewTree(String userNum, AppWebResult<NewTree> result);
 
 }

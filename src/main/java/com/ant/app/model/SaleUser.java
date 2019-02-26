@@ -46,7 +46,7 @@ public class SaleUser implements Serializable{
     private String treeSupNum;
     private String oldFirstPwd;
     private String joinMoneyYuan;
-    private Integer leftOrRight;//左0或右1
+    private Integer leftOrRight;//左1或右2
     @Override
     public String toString() {
         return "SaleUser{" +
@@ -59,8 +59,8 @@ public class SaleUser implements Serializable{
                 ", treeSupId=" + treeSupId +
                 ", joinMoney=" + joinMoney +
                 ", registeCore=" + registeCore +
-                ", uTime=" + uTime +
-                ", cTime=" + cTime +
+                ", treeSupNum=" + treeSupNum +
+                ", leftOrRight=" + leftOrRight +
                 '}';
     }
 
