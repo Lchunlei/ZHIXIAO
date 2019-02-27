@@ -36,6 +36,7 @@ public class SaleUser implements Serializable{
     private Integer reBack;//0未回本1已回本
     private Integer totalIncome;
     private Integer balance;
+    private Integer bWebIn;//B网总收入
     private Integer coin;
     private Integer registeCore;
     private Integer registeCoreMoney;//报单中心费
@@ -62,6 +63,14 @@ public class SaleUser implements Serializable{
                 ", treeSupNum=" + treeSupNum +
                 ", leftOrRight=" + leftOrRight +
                 '}';
+    }
+
+    public Integer getbWebIn() {
+        return bWebIn;
+    }
+
+    public void setbWebIn(Integer bWebIn) {
+        this.bWebIn = bWebIn;
     }
 
     public Integer getLeftSurplus() {

@@ -98,7 +98,8 @@ public class InComeServiceImpl implements InComeService{
                     try {
                         userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(), Constants.XIAO_YI_FEN_HONG_CODE, Constants.XIAO_YI_FEN_HONG,aMoney));
                         userIncomeDao.insertBIncome(new WebBIncome(u.getUserId(),bMoney));
-                        userDao.addBalance(oneMoney,u.getUserId());
+                        userDao.addBalance(aMoney,u.getUserId());
+                        userDao.addBwebIn(bMoney,u.getUserId());
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -151,7 +152,8 @@ public class InComeServiceImpl implements InComeService{
                         Integer bMoney = oneMoney-aMoney;
                         userIncomeDao.insertUserIncome(new UserIncome(newUser.getTreeSupId(), Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,aMoney));
                         userIncomeDao.insertBIncome(new WebBIncome(newUser.getTreeSupId(),bMoney));
-                        userDao.addBalance(oneMoney,newUser.getTreeSupId());
+                        userDao.addBalance(aMoney,newUser.getTreeSupId());
+                        userDao.addBwebIn(bMoney,newUser.getTreeSupId());
                     }
                 }else {
                     //上2层
@@ -166,7 +168,8 @@ public class InComeServiceImpl implements InComeService{
                             Integer bMoney = mpney-aMoney;
                             userIncomeDao.insertUserIncome(new UserIncome(twoUser.getUserId(),Constants.PING_HENG_JIANG_CODE, Constants.PING_HENG_JIANG,aMoney));
                             userIncomeDao.insertBIncome(new WebBIncome(twoUser.getUserId(),bMoney));
-                            userDao.addBalance(mpney,twoUser.getUserId());
+                            userDao.addBalance(aMoney,twoUser.getUserId());
+                            userDao.addBwebIn(bMoney,twoUser.getUserId());
                             //上3层
 //                        SaleUser u1 = userDao.selectUserById(lUser.getTreeRight());
 //                        SaleUser u2 = userDao.selectUserById(lUser.getTreeLeft());
@@ -202,7 +205,8 @@ public class InComeServiceImpl implements InComeService{
                 if(upUser.getTreeLeft().equals(newUserId)){
                     userIncomeDao.insertUserIncome(new UserIncome(upUserId,Constants.BU_MEN_JIANG_CODE, Constants.BU_MEN_JIANG,aMoney));
                     userIncomeDao.insertBIncome(new WebBIncome(upUserId,bMoney));
-                    userDao.addBalance(money,upUserId);
+                    userDao.addBalance(aMoney,upUserId);
+                    userDao.addBwebIn(bMoney,upUserId);
                 }
                 newUserId=upUserId;
                 upUserId=upUser.getTreeSupId();
@@ -242,7 +246,8 @@ public class InComeServiceImpl implements InComeService{
                     Integer bMoney = money-aMoney;
                     userIncomeDao.insertUserIncome(new UserIncome(u.getUserId(),Constants.ZU_ZHI_JIANG_CODE, Constants.ZU_ZHI_JIANG,aMoney));
                     userIncomeDao.insertBIncome(new WebBIncome(u.getUserId(),bMoney));
-                    userDao.addBalance(money,u.getUserId());
+                    userDao.addBalance(aMoney,u.getUserId());
+                    userDao.addBwebIn(bMoney,u.getUserId());
                     //增加管理奖
                     Integer upRefereeId=u.getRefereeId();
                     if(upRefereeId!=null){
@@ -253,7 +258,8 @@ public class InComeServiceImpl implements InComeService{
                         for(int i=0;i<5;i++){
                             userIncomeDao.insertUserIncome(new UserIncome(upUser.getUserId(), Constants.GUAN_LI_JIANG_CODE, Constants.GUAN_LI_JIANG,a1Money));
                             userIncomeDao.insertBIncome(new WebBIncome(upUser.getUserId(),b1Money));
-                            userDao.addBalance(moneyG,upUser.getUserId());
+                            userDao.addBalance(a1Money,upUser.getUserId());
+                            userDao.addBwebIn(b1Money,upUser.getUserId());
                             upRefereeId=upUser.getRefereeId();
                             if(upRefereeId==null){
                                 break;
@@ -279,7 +285,6 @@ public class InComeServiceImpl implements InComeService{
             int moneyPre = 0;
             if(users.size()<20){
                 for(SaleUser u :users){
-                    System.out.println("****>"+u);
                     Integer uMoney = userIncomeDao.selectMyAllZuZhiJiang(u.getUserId());
                     if(uMoney==null||uMoney.equals(0)){
 
@@ -309,7 +314,8 @@ public class InComeServiceImpl implements InComeService{
                 Integer b1Money = money-a1Money;
                 userIncomeDao.insertUserIncome(new UserIncome(newUser.getUserId(), Constants.XING_YUN_FEN_HONG_CODE, Constants.XING_YUN_FEN_HONG,a1Money));
                 userIncomeDao.insertBIncome(new WebBIncome(newUser.getUserId(),b1Money));
-                userDao.addBalance(money,newUser.getUserId());
+                userDao.addBalance(a1Money,newUser.getUserId());
+                userDao.addBwebIn(b1Money,newUser.getUserId());
             }
         }catch (Exception e){
             log.error(e.getMessage(),e);

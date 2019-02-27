@@ -35,6 +35,8 @@ public class UserWebServiceImpl implements UserWebService{
             webInit.setRegistCoin(user.getJoinMoney()/100);
         }
         webInit.setUserNum(user.getUserNum());
+        webInit.setBalance(user.getBalance());
+        webInit.setbWebIn(user.getbWebIn());
         result.setData(webInit);
     }
 

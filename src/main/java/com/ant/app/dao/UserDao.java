@@ -101,6 +101,9 @@ public interface UserDao {
     @Update("UPDATE sale_user SET balance=${money}+balance WHERE userId=${userId}")
     Integer addBalance(@Param("money")Integer money,@Param("userId") Integer userId);
 
+    @Update("UPDATE sale_user SET bWebIn=${bWebIn}+bWebIn WHERE userId=${userId}")
+    Integer addBwebIn(@Param("bWebIn")Integer bWebIn,@Param("userId") Integer userId);
+
     @Update("UPDATE sale_user SET luckEnd=1+luckEnd,balance=${money}+balance WHERE userId=${userId}")
     Integer addOneSunLuck(@Param("money")Integer money,@Param("userId") Integer userId);
 
